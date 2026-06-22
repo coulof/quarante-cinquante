@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/entities/character_base.tscn" id="1_base"]
 [ext_resource type="Script" path="res://scenes/entities/hero.gd" id="2_hero"]
 [ext_resource type="Resource" path="res://resources/weapons/shovel.tres" id="3_shovel"]
 [ext_resource type="Resource" path="res://resources/weapons/laser.tres" id="4_laser"]
 [ext_resource type="Resource" path="res://resources/weapons/sabre.tres" id="5_sabre"]
+[ext_resource type="SpriteFrames" path="res://resources/sprite_frames/hero_frames.tres" id="6_frames"]
 
 [node name="Hero" instance=ExtResource("1_base")]
 collision_layer = 2
@@ -16,4 +17,5 @@ base_damage = 34.0
 all_weapons = Array[Weapon]([ExtResource("3_shovel"), ExtResource("4_laser"), ExtResource("5_sabre")])
 
 [node name="Visual" parent="." index="0"]
-color = Color(0.95, 0.82, 0.2, 1)
+sprite_frames = ExtResource("6_frames")
+animation = &"idle"

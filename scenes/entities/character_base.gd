@@ -22,19 +22,17 @@ var facing: int = 1
 var knockback_velocity: Vector2 = Vector2.ZERO
 
 @onready var state_machine: StateMachine = $StateMachine
-@onready var visual: ColorRect = $Visual
-
-var _base_color: Color = Color.WHITE
+@onready var visual: AnimatedSprite2D = $Visual
 
 
 func _ready() -> void:
 	health = max_health
-	_base_color = visual.color
 	_setup()
-	state_machine.setup(self)
+	# Connect before setup() so the initial state's animation actually plays.
 	state_machine.state_entered.connect(_on_state_entered)
 	hurt.connect(_on_hurt)
 	died.connect(_on_died)
+	state_machine.setup(self)
 	health_changed.emit(health, max_health)
 
 
@@ -90,6 +88,8 @@ func face(dir_x: float) -> void:
 	if absf(dir_x) < 0.01:
 		return
 	facing = 1 if dir_x > 0.0 else -1
+	if visual:
+		visual.flip_h = facing < 0
 
 
 # --- Signal reactions ---------------------------------------------------------
@@ -103,13 +103,16 @@ func _on_died() -> void:
 
 
 func _on_state_entered(state_name: String) -> void:
-	# Placeholder visual feedback (no art yet): tint by state.
-	match state_name.to_lower():
-		"hurt":
-			visual.color = Color(1, 0.3, 0.3)
-		"attack":
-			visual.color = _base_color.lightened(0.4)
-		"dead":
-			visual.color = Color(0.3, 0.3, 0.3)
-		_:
-			visual.color = _base_color
+	var anim := state_name.to_lower()
+	if visual and visual.sprite_frames and visual.sprite_frames.has_animation(anim):
+		visual.play(anim)
+	if anim == "hurt":
+		_flash(Color(1, 0.45, 0.45))
+
+
+func _flash(tint: Color) -> void:
+	if not visual:
+		return
+	visual.modulate = tint
+	var tween := create_tween()
+	tween.tween_property(visual, "modulate", Color.WHITE, 0.25)

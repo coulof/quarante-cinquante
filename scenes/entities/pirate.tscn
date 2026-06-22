@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/entities/enemy_base.tscn" id="1_enemy"]
+[ext_resource type="SpriteFrames" path="res://resources/sprite_frames/pirate_frames.tres" id="2_frames"]
 
 [node name="Pirate" instance=ExtResource("1_enemy")]
 max_health = 70.0
@@ -8,4 +9,5 @@ move_speed = 110.0
 weakness = "sabre"
 
 [node name="Visual" parent="." index="0"]
-color = Color(0.55, 0.3, 0.3, 1)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
