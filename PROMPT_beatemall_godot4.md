@@ -1,158 +1,94 @@
-# Browser Beat-em-all — Godot 4 Project Bootstrap
-> Prompt for Claude Code — recommended model: **claude-sonnet-4-6**
+# Browser Beat-em-all — Godot 4 Project
+
+2D pixel-art beat-em-all playable in the browser (HTML5), for a 7-year-old audience.
+This file is the living spec/status; see `CLAUDE.md` for how to work in the repo.
 
 ---
 
 ## Project vision
-2D pixel art beat-em-all playable in browser (HTML5), designed for a 7-year-old audience.
-Kid-friendly enemies (Zombies, Robots, Pirates, Aliens…). Hero: a boy with a cap (Link-ish).
-Combat feel inspired by TMNT arcade. Hosted on Cloudflare Pages.
+Kid-friendly enemies (Zombies, Robots, Pirates, Aliens…). Hero: a boy with a cap.
+Combat feel inspired by the TMNT arcade. Hosted on Cloudflare Pages.
 
 ## Art direction
-- Style: chunky pixel art, 32x48px characters
-- Phase 1: use a free asset pack (Kenney.nl or Tiny RPG on itch.io) — no custom art yet
-- Phase 2 (later): custom sprites via Aseprite
-- All imports: Filter = Nearest, no anti-aliasing, compress/mode = 0
-- Resolution: 1280x720, pixel-perfect scaling
-  (Project > Display > Window > Stretch mode = canvas, aspect = keep)
+- Style: chunky pixel art, 32x48px characters.
+- **Current art: procedurally-generated CC0 placeholders** (`tools/generate_sprites.py`)
+  — animated idle/run/attack/hurt/dead per character. NOT hand-edited; regenerate
+  via the script. Phase 2: swap in a real pack (Kenney/itch.io) or Aseprite art by
+  replacing `assets/sprites/*.png` + the SpriteFrames anim names.
+- All texture imports: Filter = Nearest (project default_texture_filter = 0).
+- Resolution: 1280x720, stretch mode `canvas_items`, aspect `keep`.
 
 ## Tech stack
-- Engine: Godot 4.x
-- Language: GDScript only, no C#
-- Target: HTML5 export → Cloudflare Pages
-  (requires COOP/COEP headers via `_headers` file at repo root)
-- Save: localStorage via JavaScriptBridge (user:// doesn't persist in browser)
-- Signals over direct calls everywhere
+- Engine: Godot 4.6.x. GDScript only, no C#.
+- Target: HTML5 export → Cloudflare Pages (deploy via `Taskfile.yml`).
+  COOP/COEP via `_headers` (copied into `build/` on every `task build`).
+- Save: localStorage via JavaScriptBridge on web, `user://` JSON elsewhere.
+- **Signals over direct calls everywhere.**
 
-## Core game mechanic: weapon vs enemy type
-Each enemy type has ONE weapon weakness.
-Starter roster:
+## Core mechanic: weapon vs enemy type
+Each enemy type has ONE weapon weakness. Hero carries ALL unlocked weapons at once,
+switched with number keys.
 
-| Enemy  | Weakness  | Key |
-|--------|-----------|-----|
-| Zombie | Shovel    | 1   |
-| Robot  | Laser gun | 2   |
-| Pirate | Sabre     | 3   |
+| Enemy  | Weakness  | Key | Weapon style                 |
+|--------|-----------|-----|------------------------------|
+| Zombie | Shovel    | 1   | melee (overhead chop)        |
+| Robot  | Laser gun | 2   | **ranged** (fires LaserBolt) |
+| Pirate | Sabre     | 3   | melee (slash)                |
 
-- Hero carries ALL unlocked weapons simultaneously, switched with number keys 1/2/3…
-- Wrong weapon on enemy = 25% damage (chip). Correct weapon = 100% + hit animation.
-- Enemy telegraphs its type via icon above head for 1.5s before attacking.
+- Correct weapon = 100% damage (`Outcome.WEAK`). Wrong = 25% chip (`Outcome.CHIP`).
+- Hero plays a **distinct attack animation per weapon** (`attack` / `attack_laser` /
+  `attack_sabre`), driven by `weapon.attack_anim`.
+- Enemy telegraphs its weakness above its head for 1.5s before attacking; the HUD
+  also shows "USE: <weapon>".
+- Weapon hotkeys match `event.physical_keycode` so 1/2/3 work on any keyboard
+  layout (the dev uses AZERTY).
 - Phase 2 later: correct weapon + perfect timing = 150% + special animation.
 
-## Progression system
-- Start: hero + shovel only. One enemy type (Zombie).
-- Level 2 unlock: new weapon (Laser) + new enemy type (Robot).
-- Level 3 unlock: new weapon (Sabre) + new enemy type (Pirate).
-- Unlock = new skin for hero (visually distinct special attack animation, same stats).
-- Unlocks persist via JavaScriptBridge → localStorage.
+## Progression
+- Start: shovel only, zombies (Level 1).
+- Clear L1 → unlock Laser + skin → **Level 2 mixes Robots + Zombies** (must switch
+  between laser and shovel). Clear L2 → unlock Sabre + skin.
+- Levels chain via `next_level_scene`; unlock screen advances to it (empty = replay).
+- Unlocks persist via GameState autoload → localStorage.
 
-## Scene tree to scaffold
-
+## Actual structure
 ```
 res://
-├── main.tscn                    # Root: bootstraps GameState, loads first scene
-├── export_presets.cfg           # HTML5 preset pre-configured
-├── _headers                     # Cloudflare Pages COOP/COEP headers
+├── main.tscn / main.gd          # bootstrap → loads level_01
+├── project.godot                # autoloads, input map, 1280x720 canvas_items
+├── export_presets.cfg           # Web preset (build/index.html)
+├── _headers                     # COOP/COEP
+├── Taskfile.yml                 # build / serve / cf:* / deploy
+├── tools/generate_sprites.py    # regenerates CC0 sprites + SpriteFrames
 ├── scenes/
-│   ├── world/
-│   │   ├── level_01.tscn        # Arena (fixed camera), Zombie waves only
-│   │   ├── zone.gd              # Resource: enemy list, clear trigger, next zone ref
-│   │   └── hud.tscn             # HP bar, active weapon indicator, enemy type icon
-│   ├── entities/
-│   │   ├── character_base.tscn  # CharacterBody2D base, StateMachine, AnimatedSprite2D
-│   │   ├── hero.tscn            # Extends character_base, weapon inventory, input
-│   │   ├── enemy_base.tscn      # Extends character_base, weakness: String, patrol AI
-│   │   ├── zombie.tscn          # weakness = "shovel"
-│   │   ├── robot.tscn           # weakness = "laser"
-│   │   └── pirate.tscn          # weakness = "sabre"
-│   └── ui/
-│       ├── character_select.tscn
-│       └── unlock_screen.tscn
-├── scripts/
-│   ├── game_state.gd            # Autoload: unlocks, active skin, save/load via JS bridge
-│   ├── combat_system.gd         # resolve_hit(attacker_weapon, defender_weakness) → outcome
-│   ├── enemy_spawner.gd         # Zone-based wave controller
-│   └── weapon.gd                # Resource: id, display_name, damage_mult, key, sprite
-└── assets/
-    ├── sprites/                 # Asset pack sprites dropped here
-    └── fonts/                   # Pixel font (Kenney Pixel or similar)
+│   ├── world/  level_01.tscn, level_02.tscn (share level_01.gd), hud, zone.gd
+│   ├── entities/ character_base (+states/), hero, enemy_base, zombie/robot/pirate,
+│   │             projectile.gd, laser_bolt.tscn
+│   └── ui/ unlock_screen, character_select (stub)
+├── scripts/ game_state.gd, combat_system.gd (autoloads), enemy_spawner.gd, weapon.gd
+├── resources/ weapons/*.tres, zones/*.tres, sprite_frames/*.tres
+└── assets/ sprites/ (generated PNGs), fonts/
 ```
 
-## Key scripts spec
+## Resource specs (current)
+- **weapon.gd**: `id, display_name, damage_multiplier, hotkey: Key, placeholder_color,
+  sprite, attack_anim, ranged: bool, projectile_scene: PackedScene`.
+- **zone.gd**: `enemy_scene, enemy_scenes: Array[PackedScene] (mixed waves),
+  enemy_count, spawn_interval, next_zone, camera_target_x (stubbed)`.
+- **combat_system.gd**: `enum Outcome { WEAK, CHIP }`, `resolve_hit(weapon_id, enemy)`,
+  `damage_for(outcome, base)`, signal `attack_resolved`.
+- **StateMachine**: states IDLE/RUN/ATTACK/HURT/DEAD as separate scripts in
+  `scenes/entities/states/`; transitions by emitting `transitioned`; HURT/DEAD forced
+  from the character's `hurt`/`died` signals via `force_transition`.
 
-### game_state.gd (Autoload)
-```gdscript
-# Persisted fields (localStorage via JavaScriptBridge)
-var unlocked_weapons: Array[String] = ["shovel"]
-var unlocked_skins: Array[String]   = ["hero_default"]
-var active_skin: String             = "hero_default"
-var highest_level: int              = 1
+## Status — DONE
+Bootstrap + scaffolding, save/load, combat, hero inventory + hotkeys, telegraph,
+HUD weapon strip, Level 1 (zombies) and Level 2 (mixed), unlock flow, CC0 animated
+sprites, ranged laser, per-weapon attack anims, Web export + Cloudflare Taskfile.
 
-func save() -> void  # JSON → JavaScriptBridge.eval("localStorage.setItem(...)")
-func load() -> void  # JavaScriptBridge.eval("localStorage.getItem(...)") → parse
-```
-
-### combat_system.gd
-```gdscript
-enum Outcome { WEAK, CHIP }
-
-signal attack_resolved(outcome: Outcome, target: Node)
-
-func resolve_hit(weapon_id: String, enemy: Node) -> Outcome:
-    if weapon_id == enemy.weakness:
-        return Outcome.WEAK   # 100% damage + hit anim
-    return Outcome.CHIP       # 25% damage
-```
-
-### zone.gd (Resource)
-```gdscript
-@export var enemy_scene: PackedScene
-@export var enemy_count: int
-@export var spawn_interval: float
-@export var next_zone: Resource     # null = level complete
-# Camera scroll target pre-defined here for future scroll support
-@export var camera_target_x: float = 0.0
-```
-
-### weapon.gd (Resource)
-```gdscript
-@export var id: String              # "shovel", "laser", "sabre"
-@export var display_name: String
-@export var damage_multiplier: float
-@export var hotkey: Key             # KEY_1, KEY_2, KEY_3
-@export var sprite: Texture2D
-```
-
-## StateMachine pattern for entities
-States: IDLE, RUN, ATTACK, HURT, DEAD
-Transitions via signals, not direct method calls.
-Each state is an inner class or separate script in a `states/` subfolder.
-
-## _headers file (Cloudflare Pages)
-```
-/*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
-```
-
-## Immediate deliverables for this session
-1. Full directory + file structure (empty scenes + stubbed scripts)
-2. `game_state.gd` with working localStorage save/load via JavaScriptBridge
-3. `combat_system.gd` with resolve_hit + signal
-4. `weapon.gd` + 3 weapon Resources pre-filled (shovel, laser, sabre)
-5. `character_base.tscn` + StateMachine (colored rect placeholder, no art)
-6. `hero.tscn` — weapon inventory, hotkey switching (1/2/3), attack triggers combat_system
-7. `zombie.tscn` — weakness="shovel", telegraph icon, basic patrol
-8. `level_01.tscn` — fixed camera arena, Zone resource with 5 zombies, HUD wired
-9. `export_presets.cfg` + `_headers` configured and ready
-10. Game boots, one wave of zombies defeatable, unlock screen shows on clear
-
-## Out of scope for this session
-- Custom art (use colored rects + placeholder icons)
-- Audio
-- Main menu / title screen
-- Levels 2 and 3 (architecture ready, content later)
-- Camera scrolling (zone.camera_target_x stubbed, not activated)
-- Perfect timing mechanic (Phase 2)
-- Gamepad support
-- Mobile touch controls
+## Out of scope / TODO
+- Level 3 (pirates → sabre) content; Aliens roster.
+- Audio, main menu / title screen.
+- Camera scrolling (`zone.camera_target_x` stubbed).
+- Perfect-timing mechanic (Phase 2), gamepad, mobile touch.
+- Hero skin actually changing visuals (unlock tracked, art not yet swapped).
