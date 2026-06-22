@@ -102,11 +102,20 @@ func _on_died() -> void:
 	state_machine.force_transition("Dead")
 
 
+## Which attack animation to play; hero overrides this to vary it per weapon.
+func get_attack_anim() -> String:
+	return "attack"
+
+
 func _on_state_entered(state_name: String) -> void:
-	var anim := state_name.to_lower()
-	if visual and visual.sprite_frames and visual.sprite_frames.has_animation(anim):
-		visual.play(anim)
-	if anim == "hurt":
+	var state := state_name.to_lower()
+	var anim := get_attack_anim() if state == "attack" else state
+	if visual and visual.sprite_frames:
+		if visual.sprite_frames.has_animation(anim):
+			visual.play(anim)
+		elif visual.sprite_frames.has_animation("attack") and state == "attack":
+			visual.play("attack")  # fallback if a weapon anim is missing
+	if state == "hurt":
 		_flash(Color(1, 0.45, 0.45))
 
 

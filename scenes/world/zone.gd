@@ -5,6 +5,9 @@ class_name Zone
 ## camera scroll target is stubbed now for future side-scrolling support.
 
 @export var enemy_scene: PackedScene
+## Optional: if non-empty, each spawn is picked at random from this list, so a
+## zone can mix enemy types (higher levels). Falls back to enemy_scene otherwise.
+@export var enemy_scenes: Array[PackedScene] = []
 @export var enemy_count: int = 5
 @export var spawn_interval: float = 1.0
 ## null = level complete after this zone is cleared.

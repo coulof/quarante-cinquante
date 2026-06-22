@@ -50,8 +50,14 @@ func _process(delta: float) -> void:
 			_spawn_timer = _current_zone.spawn_interval
 
 
+func _pick_scene() -> PackedScene:
+	if not _current_zone.enemy_scenes.is_empty():
+		return _current_zone.enemy_scenes[_rng.randi_range(0, _current_zone.enemy_scenes.size() - 1)]
+	return _current_zone.enemy_scene
+
+
 func _spawn_one() -> void:
-	var enemy := _current_zone.enemy_scene.instantiate()
+	var enemy := _pick_scene().instantiate()
 	_enemies_root.add_child(enemy)
 	enemy.global_position = _random_spawn_point()
 	_spawned += 1

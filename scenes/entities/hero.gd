@@ -46,7 +46,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		for w in available_weapons:
-			if event.keycode == w.hotkey:
+			# Match physical position so 1/2/3 work on any keyboard layout (AZERTY etc.).
+			if event.physical_keycode == w.hotkey:
 				_select(w)
 				return
 	if event.is_action_pressed("attack"):
@@ -68,8 +69,28 @@ func consume_attack() -> void:
 
 func perform_attack() -> float:
 	if current_weapon != null:
-		_swing()
+		if current_weapon.ranged:
+			_fire_projectile()
+		else:
+			_swing()
 	return attack_duration
+
+
+## Hero plays a weapon-specific attack animation (overhead/laser/slash).
+func get_attack_anim() -> String:
+	if current_weapon != null and not current_weapon.attack_anim.is_empty():
+		return current_weapon.attack_anim
+	return "attack"
+
+
+func _fire_projectile() -> void:
+	if current_weapon.projectile_scene == null:
+		return
+	var bolt: Projectile = current_weapon.projectile_scene.instantiate()
+	get_parent().add_child(bolt)
+	var muzzle := global_position + Vector2(facing * 24.0, -attack_height * 0.5)
+	bolt.setup(current_weapon.id, base_damage * current_weapon.damage_multiplier,
+		Vector2(facing, 0.0), muzzle)
 
 
 func _swing() -> void:
