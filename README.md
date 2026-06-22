@@ -22,17 +22,29 @@ Each enemy has one weapon weakness (Zombie→Shovel, Robot→Laser, Pirate→Sab
 Correct weapon = 100% damage, wrong weapon = 25% chip. Enemies telegraph their
 type above their head for 1.5s before striking. Clear the wave → unlock screen.
 
-## Web export (Cloudflare Pages)
+## Web export & Cloudflare Pages
+
+Everything is driven by [go-task](https://taskfile.dev) (`Taskfile.yml`):
 
 ```bash
-# One-time: install matching export templates (Editor → Manage Export Templates,
-# or place web_nothreads_{debug,release}.zip in the templates dir for your version)
-godot --headless --export-release "Web" build/index.html
+task                 # list tasks
+task templates       # one-time: download matching Godot export templates (~1.2 GB)
+task build           # export Web build to build/ and copy the _headers file in
+task serve           # preview locally via `wrangler pages dev` (applies _headers)
+
+task cf:login        # one-time: authenticate wrangler with Cloudflare
+task cf:create       # one-time: create the Pages project
+task deploy          # build + deploy to production (main)
+task cf:deploy       # build + deploy a preview
 ```
 
-`_headers` ships the COOP/COEP headers Cloudflare Pages serves for cross-origin
-isolation. Saves persist to `localStorage` via `JavaScriptBridge` on web, and to
-`user://` elsewhere.
+Set the Pages project name via the `PROJECT_NAME` var at the top of `Taskfile.yml`
+(default `quarante-cinquante`). `GODOT_VERSION` must match your editor build so the
+right export templates are installed.
+
+`_headers` ships the COOP/COEP headers for cross-origin isolation and is copied
+into `build/` on every `task build`. Saves persist to `localStorage` via
+`JavaScriptBridge` on web, and to `user://` elsewhere.
 
 ## Layout
 

@@ -1,0 +1,81 @@
+version: '3'
+
+# Build & deploy the Godot HTML5 build to Cloudflare Pages.
+# Structure mirrors coulof/lafabrique.ai (cf:login / cf:create / cf:deploy* / deploy).
+
+vars:
+  PROJECT_NAME: quarante-cinquante       # Cloudflare Pages project name (lowercase, hyphens)
+  GODOT: godot                           # Godot 4 binary on PATH
+  GODOT_VERSION: 4.6.2                    # must match the editor binary exactly
+  EXPORT_PRESET: Web                      # name in export_presets.cfg
+  BUILD_DIR: build
+  TEMPLATES_DIR: '{{.HOME}}/.local/share/godot/export_templates/{{.GODOT_VERSION}}.stable'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  templates:
+    desc: Download & install matching Godot export templates (run once)
+    status:
+      - test -f "{{.TEMPLATES_DIR}}/web_nothreads_release.zip"
+    cmds:
+      - rm -rf /tmp/godot-tpl && mkdir -p /tmp/godot-tpl
+      - curl -fL -o /tmp/godot-tpl/templates.tpz "https://github.com/godotengine/godot/releases/download/{{.GODOT_VERSION}}-stable/Godot_v{{.GODOT_VERSION}}-stable_export_templates.tpz"
+      - unzip -q -o /tmp/godot-tpl/templates.tpz -d /tmp/godot-tpl
+      - mkdir -p "{{.TEMPLATES_DIR}}"
+      - cp -f /tmp/godot-tpl/templates/* "{{.TEMPLATES_DIR}}/"
+
+  import:
+    desc: Import project resources (headless)
+    cmds:
+      - '{{.GODOT}} --headless --import'
+
+  build:
+    desc: Export the Web build to {{.BUILD_DIR}}/ (with Cloudflare _headers)
+    deps: [import, templates]
+    cmds:
+      - mkdir -p {{.BUILD_DIR}}
+      - '{{.GODOT}} --headless --export-release "{{.EXPORT_PRESET}}" {{.BUILD_DIR}}/index.html'
+      - cp -f _headers {{.BUILD_DIR}}/_headers   # COOP/COEP for cross-origin isolation
+
+  serve:
+    desc: Preview the build locally with the Cloudflare _headers applied
+    deps: [build]
+    cmds:
+      - npx wrangler pages dev {{.BUILD_DIR}}
+
+  clean:
+    desc: Remove the build output
+    cmds:
+      - rm -rf {{.BUILD_DIR}}
+
+  cf:login:
+    desc: Login to Cloudflare
+    cmds:
+      - npx wrangler login
+
+  cf:create:
+    desc: Create the Cloudflare Pages project (run once)
+    cmds:
+      - npx wrangler pages project create {{.PROJECT_NAME}} --production-branch=main
+
+  cf:deploy:
+    desc: Deploy a preview to Cloudflare Pages
+    deps: [build]
+    cmds:
+      - npx wrangler pages deploy {{.BUILD_DIR}} --project-name={{.PROJECT_NAME}}
+
+  cf:deploy:prod:
+    desc: Deploy to Cloudflare Pages (production)
+    deps: [build]
+    cmds:
+      - npx wrangler pages deploy {{.BUILD_DIR}} --project-name={{.PROJECT_NAME}} --branch=main
+
+  deploy:
+    desc: Build and deploy to production
+    cmds:
+      - task: build
+      - task: cf:deploy:prod
