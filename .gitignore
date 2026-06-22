@@ -7,3 +7,6 @@
 # Exported binaries
 export.cfg
 *.tmp
+
+# Wrangler / Cloudflare local cache & credentials
+.wrangler/
