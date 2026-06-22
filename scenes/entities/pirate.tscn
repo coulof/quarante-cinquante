@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/entities/enemy_base.tscn" id="1_enemy"]
+
+[node name="Pirate" instance=ExtResource("1_enemy")]
+max_health = 70.0
+move_speed = 110.0
+weakness = "sabre"
+
+[node name="Visual" parent="." index="0"]
+color = Color(0.55, 0.3, 0.3, 1)

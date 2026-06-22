@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = "laser"
+display_name = "Laser Gun"
+damage_multiplier = 1.0
+hotkey = 50
+placeholder_color = Color(0.2, 0.9, 1.0, 1)

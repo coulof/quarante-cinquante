@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/entities/enemy_base.tscn" id="1_enemy"]
+
+[node name="Robot" instance=ExtResource("1_enemy")]
+max_health = 80.0
+move_speed = 80.0
+weakness = "laser"
+
+[node name="Visual" parent="." index="0"]
+color = Color(0.6, 0.6, 0.7, 1)

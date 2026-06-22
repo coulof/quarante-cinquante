@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Zone" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/world/zone.gd" id="1_zone"]
+[ext_resource type="PackedScene" path="res://scenes/entities/robot.tscn" id="2_robot"]
+
+[resource]
+script = ExtResource("1_zone")
+enemy_scene = ExtResource("2_robot")
+enemy_count = 4
+spawn_interval = 1.4
+camera_target_x = 0.0

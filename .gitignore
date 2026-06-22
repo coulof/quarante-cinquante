@@ -1,0 +1,9 @@
+# Godot 4 .gitignore
+.godot/
+/build/
+/android/
+*.translation
+
+# Exported binaries
+export.cfg
+*.tmp

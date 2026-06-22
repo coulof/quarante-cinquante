@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "godot": {
+      "source": "Randroids-Dojo/skills",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/godot/SKILL.md",
+      "computedHash": "7567d89fe4060ac530ebb8fd4e85dd89e62244233e52764ece3fa5c7494da2cc"
+    }
+  }
+}
