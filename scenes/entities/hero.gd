@@ -52,6 +52,24 @@ func _select(weapon: Weapon) -> void:
 	weapon_switched.emit(weapon)
 
 
+## Weapon select by id — used by the touch HUD chips (keyboard path is below).
+func select_weapon_id(id: String) -> void:
+	if is_dead:
+		return
+	for w in available_weapons:
+		if w.id == id:
+			_select(w)
+			Audio.play("ui_weapon_switch")
+			return
+
+
+func _process(_delta: float) -> void:
+	# Poll the attack action so keyboard (Space), desktop mouse, and the on-screen
+	# touch button all funnel through one path.
+	if not is_dead and Input.is_action_just_pressed("attack"):
+		_attack_queued = true
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if is_dead:
 		return
@@ -62,8 +80,6 @@ func _unhandled_input(event: InputEvent) -> void:
 				_select(w)
 				Audio.play("ui_weapon_switch")
 				return
-	if event.is_action_pressed("attack"):
-		_attack_queued = true
 
 
 # --- State interface ----------------------------------------------------------

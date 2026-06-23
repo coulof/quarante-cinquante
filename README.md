@@ -18,6 +18,8 @@ Boots `main.tscn` → `scenes/world/level_01.tscn`, the first of four levels.
 - **Move:** arrow keys / WASD
 - **Attack:** Space (or left mouse)
 - **Switch weapon:** `1` Pickaxe · `2` Glow Sword · `3` Whip (only unlocked ones work)
+- **Touch (mobile):** on-screen joystick (move) + **ATK** button to attack; tap a weapon
+  card to switch. Best played in **landscape** (a hint shows if you're in portrait).
 
 Each enemy has one weapon weakness: **Zombie → Pickaxe** (melee), **Robot → Glow Sword**
 (ranged blue bolt), **Pirate → Whip** (mid-range). Correct weapon = 100% damage, wrong

@@ -65,6 +65,12 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
 - **Signals over direct calls** — the whole entity/HUD/level wiring is signal-based.
 - **Keyboard input uses `event.physical_keycode`**, not `keycode` — the dev is on
   AZERTY, where `keycode` is layout-dependent. Movement uses physical-key input actions.
+- **Touch controls** (mobile web): `scenes/ui/joystick.gd` feeds the `move_*` actions;
+  the HUD (`hud.gd`/`hud.tscn`) has an ATK button (drives the `attack` action) + tappable
+  weapon chips (`weapon_selected` → `hero.select_weapon_id`). Shown only when
+  `DisplayServer.is_touchscreen_available()` (or HUD `force_touch_ui` for editor testing).
+  `emulate_mouse_from_touch=false` so touches don't fire the mouse-bound attack. Hero
+  polls `attack` in `_process` so keyboard/mouse/touch all funnel through one path.
 - **Collision layers**: walls=1, hero=2, enemy=4. Hero melee query masks 4; enemy
   attacks mask 2; laser bolt masks 4.
 - **Sprite anim names are the contract**: per-weapon **in-hand** hero sheets use a single

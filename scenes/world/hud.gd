@@ -3,19 +3,41 @@ extends Control
 ## active one highlighted), enemy-type telegraph, and wave counter. Driven by
 ## signals wired up in the level script.
 
+## Emitted when a weapon chip is tapped (touch / mouse) — the level routes it to the hero.
+signal weapon_selected(weapon_id: String)
+
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var weapon_strip: HBoxContainer = $WeaponStrip
 @onready var enemy_type_label: Label = $EnemyTypeLabel
 @onready var wave_label: Label = $WaveLabel
+@onready var joystick: Control = $Joystick
+@onready var attack_button: Button = $AttackButton
+@onready var rotate_hint: ColorRect = $RotateHint
 
 const ACTIVE_MODULATE := Color(1, 1, 1, 1)
 const INACTIVE_MODULATE := Color(1, 1, 1, 0.55)
+
+## Force the on-screen touch controls on even without a touchscreen (editor testing).
+@export var force_touch_ui := false
 
 var _chips: Dictionary = {}  # weapon_id -> PanelContainer
 
 
 func _ready() -> void:
 	enemy_type_label.visible = false
+	var touch := force_touch_ui or DisplayServer.is_touchscreen_available()
+	joystick.visible = touch
+	attack_button.visible = touch
+	# The attack button drives the existing "attack" action (hero polls it).
+	attack_button.button_down.connect(func(): Input.action_press("attack"))
+	attack_button.button_up.connect(func(): Input.action_release("attack"))
+
+
+func _process(_delta: float) -> void:
+	# Web can't force orientation: nudge the player to landscape on a portrait phone.
+	if rotate_hint:
+		var vp := get_viewport_rect().size
+		rotate_hint.visible = DisplayServer.is_touchscreen_available() and vp.y > vp.x
 
 
 func set_health(current: float, maximum: float) -> void:
@@ -84,13 +106,21 @@ func _make_chip(weapon: Weapon) -> PanelContainer:
 	panel.set_meta("accent", accent)
 	panel.add_theme_stylebox_override("panel", _chip_style(accent, false))
 
+	# Tap (touch or click) selects this weapon; inner controls ignore input so the tap
+	# reaches the panel.
+	panel.gui_input.connect(func(e: InputEvent):
+		if (e is InputEventMouseButton and e.pressed) or (e is InputEventScreenTouch and e.pressed):
+			weapon_selected.emit(weapon.id))
+
 	var vbox := VBoxContainer.new()
+	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.add_theme_constant_override("separation", 3)
 	panel.add_child(vbox)
 
 	# Key badge, tinted with the weapon's accent.
 	var key := Label.new()
 	key.text = char(int(weapon.hotkey))
+	key.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	key.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	key.add_theme_font_size_override("font_size", 20)
 	key.add_theme_color_override("font_color", accent)
@@ -98,12 +128,14 @@ func _make_chip(weapon: Weapon) -> PanelContainer:
 
 	var swatch := ColorRect.new()
 	swatch.color = accent
+	swatch.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	swatch.custom_minimum_size = Vector2(0, 16)
 	swatch.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_child(swatch)
 
 	var name_label := Label.new()
 	name_label.text = weapon.display_name
+	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.add_theme_font_size_override("font_size", 12)
 	vbox.add_child(name_label)

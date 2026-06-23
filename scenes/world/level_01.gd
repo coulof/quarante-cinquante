@@ -28,6 +28,7 @@ func _ready() -> void:
 	hero.health_changed.connect(hud.set_health)
 	hero.weapon_switched.connect(hud.set_weapon)
 	hero.died.connect(_on_hero_died)
+	hud.weapon_selected.connect(hero.select_weapon_id)
 	hud.set_health(hero.health, hero.max_health)
 	hud.set_weapons(hero.available_weapons, hero.current_weapon)
 
