@@ -7,7 +7,7 @@ This file is the living spec/status; see `CLAUDE.md` for how to work in the repo
 
 ## Project vision
 Kid-friendly enemies (Zombies, Robots, Pirates, Aliens…). Hero: a boy with a cap.
-Combat feel inspired by the TMNT arcade. Hosted on Cloudflare Pages.
+Combat feel inspired by the TMNT arcade. Hosted on itch.io (free).
 
 ## Art direction
 - Style: chunky pixel art, 32x48px characters.
@@ -20,8 +20,8 @@ Combat feel inspired by the TMNT arcade. Hosted on Cloudflare Pages.
 
 ## Tech stack
 - Engine: Godot 4.6.x. GDScript only, no C#.
-- Target: HTML5 export → Cloudflare Pages (deploy via `Taskfile.yml`).
-  COOP/COEP via `_headers` (copied into `build/` on every `task build`).
+- Target: HTML5 export → itch.io free hosting (deploy via `Taskfile.yml`,
+  `butler push`). The nothreads build needs no COOP/COEP headers.
 - Save: localStorage via JavaScriptBridge on web, `user://` JSON elsewhere.
 - **Signals over direct calls everywhere.**
 
@@ -36,19 +36,23 @@ switched with number keys.
 | Pirate | Sabre     | 3   | melee (slash)                |
 
 - Correct weapon = 100% damage (`Outcome.WEAK`). Wrong = 25% chip (`Outcome.CHIP`).
-- Hero plays a **distinct attack animation per weapon** (`attack` / `attack_laser` /
-  `attack_sabre`), driven by `weapon.attack_anim`.
+- Weapons: **pickaxe** (vs zombie, melee), **glow sword** (vs robot, ranged blue bolt),
+  **whip** (vs pirate, mid-range melee — larger `melee_reach`).
+- Hero plays a **distinct attack animation per weapon** (`attack_pickaxe` /
+  `attack_glowsword` / `attack_whip`), driven by `weapon.attack_anim`.
 - Enemy telegraphs its weakness above its head for 1.5s before attacking; the HUD
   also shows "USE: <weapon>".
 - Weapon hotkeys match `event.physical_keycode` so 1/2/3 work on any keyboard
   layout (the dev uses AZERTY).
 - Phase 2 later: correct weapon + perfect timing = 150% + special animation.
 
-## Progression
-- Start: shovel only, zombies (Level 1).
-- Clear L1 → unlock Laser + skin → **Level 2 mixes Robots + Zombies** (must switch
-  between laser and shovel). Clear L2 → unlock Sabre + skin.
-- Levels chain via `next_level_scene`; unlock screen advances to it (empty = replay).
+## Progression (4 levels, gentle ramp)
+- **L1** zombies only — start with the pickaxe. Clear → unlock glow sword.
+- **L2** robots only — use the glow sword. Clear → unlock whip.
+- **L3** zombies + robots (mixed) — switch pickaxe/glow sword. Clear → skin.
+- **L4** zombies + robots + pirates (mixed) — all three weapons. Final.
+- Zones: `level_0N_zone.tres`; mixed waves use `enemy_scenes[]`. Levels chain via
+  `next_level_scene`; unlock screen advances to it (empty = replay).
 - Unlocks persist via GameState autoload → localStorage.
 
 ## Actual structure
@@ -57,8 +61,7 @@ res://
 ├── main.tscn / main.gd          # bootstrap → loads level_01
 ├── project.godot                # autoloads, input map, 1280x720 canvas_items
 ├── export_presets.cfg           # Web preset (build/index.html)
-├── _headers                     # COOP/COEP
-├── Taskfile.yml                 # build / serve / cf:* / deploy
+├── Taskfile.yml                 # build / serve / itch:* / deploy
 ├── tools/generate_sprites.py    # regenerates CC0 sprites + SpriteFrames
 ├── scenes/
 │   ├── world/  level_01.tscn, level_02.tscn (share level_01.gd), hud, zone.gd
@@ -83,11 +86,14 @@ res://
 
 ## Status — DONE
 Bootstrap + scaffolding, save/load, combat, hero inventory + hotkeys, telegraph,
-HUD weapon strip, Level 1 (zombies) and Level 2 (mixed), unlock flow, CC0 animated
-sprites, ranged laser, per-weapon attack anims, Web export + Cloudflare Taskfile.
+HUD weapon strip, **4-level progression** (zombie → robot → mixed → all three), unlock
+flow, **LPC character art** (`tools/gen_lpc_character.py`), pickaxe/glow sword/whip with
+per-weapon attack anims + reach, ranged glow-sword bolt, Web export + itch.io Taskfile.
 
 ## Out of scope / TODO
-- Level 3 (pirates → sabre) content; Aliens roster.
+- **Held-weapon overlays**: show the actual pickaxe/sword/whip sprite in the hero's
+  hand. Only sword-type overlays cleanly fit the base body's `slash`; see
+  `docs/lpc-characters.md`. Aliens roster.
 - Audio, main menu / title screen.
 - Camera scrolling (`zone.camera_target_x` stubbed).
 - Perfect-timing mechanic (Phase 2), gamepad, mobile touch.

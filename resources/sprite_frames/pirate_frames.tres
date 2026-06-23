@@ -1,73 +1,120 @@
-[gd_resource type="SpriteFrames" load_steps=15 format=3]
+[gd_resource type="SpriteFrames" load_steps=26 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/pirate.png" id="sheet"]
 
 [sub_resource type="AtlasTexture" id="idle_0"]
 atlas = ExtResource("sheet")
-region = Rect2(0, 0, 32, 48)
+region = Rect2(0, 704, 64, 64)
 
-[sub_resource type="AtlasTexture" id="idle_1"]
+[sub_resource type="AtlasTexture" id="run_0"]
 atlas = ExtResource("sheet")
-region = Rect2(32, 0, 32, 48)
+region = Rect2(64, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="run_1"]
+atlas = ExtResource("sheet")
+region = Rect2(128, 704, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_2"]
 atlas = ExtResource("sheet")
-region = Rect2(64, 0, 32, 48)
+region = Rect2(192, 704, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_3"]
 atlas = ExtResource("sheet")
-region = Rect2(96, 0, 32, 48)
+region = Rect2(256, 704, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_4"]
 atlas = ExtResource("sheet")
-region = Rect2(128, 0, 32, 48)
+region = Rect2(320, 704, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_5"]
 atlas = ExtResource("sheet")
-region = Rect2(160, 0, 32, 48)
+region = Rect2(384, 704, 64, 64)
 
-[sub_resource type="AtlasTexture" id="attack_6"]
+[sub_resource type="AtlasTexture" id="run_6"]
 atlas = ExtResource("sheet")
-region = Rect2(192, 0, 32, 48)
+region = Rect2(448, 704, 64, 64)
 
-[sub_resource type="AtlasTexture" id="attack_7"]
+[sub_resource type="AtlasTexture" id="run_7"]
 atlas = ExtResource("sheet")
-region = Rect2(224, 0, 32, 48)
+region = Rect2(512, 704, 64, 64)
 
-[sub_resource type="AtlasTexture" id="attack_8"]
+[sub_resource type="AtlasTexture" id="attack_0"]
 atlas = ExtResource("sheet")
-region = Rect2(256, 0, 32, 48)
+region = Rect2(0, 960, 64, 64)
 
-[sub_resource type="AtlasTexture" id="hurt_9"]
+[sub_resource type="AtlasTexture" id="attack_1"]
 atlas = ExtResource("sheet")
-region = Rect2(288, 0, 32, 48)
+region = Rect2(64, 960, 64, 64)
 
-[sub_resource type="AtlasTexture" id="dead_10"]
+[sub_resource type="AtlasTexture" id="attack_2"]
 atlas = ExtResource("sheet")
-region = Rect2(320, 0, 32, 48)
+region = Rect2(128, 960, 64, 64)
 
-[sub_resource type="AtlasTexture" id="dead_11"]
+[sub_resource type="AtlasTexture" id="attack_3"]
 atlas = ExtResource("sheet")
-region = Rect2(352, 0, 32, 48)
+region = Rect2(192, 960, 64, 64)
 
-[sub_resource type="AtlasTexture" id="dead_12"]
+[sub_resource type="AtlasTexture" id="attack_4"]
 atlas = ExtResource("sheet")
-region = Rect2(384, 0, 32, 48)
+region = Rect2(256, 960, 64, 64)
+
+[sub_resource type="AtlasTexture" id="attack_5"]
+atlas = ExtResource("sheet")
+region = Rect2(320, 960, 64, 64)
+
+[sub_resource type="AtlasTexture" id="hurt_0"]
+atlas = ExtResource("sheet")
+region = Rect2(0, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="hurt_1"]
+atlas = ExtResource("sheet")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="hurt_2"]
+atlas = ExtResource("sheet")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_0"]
+atlas = ExtResource("sheet")
+region = Rect2(0, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_1"]
+atlas = ExtResource("sheet")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_2"]
+atlas = ExtResource("sheet")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_3"]
+atlas = ExtResource("sheet")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_4"]
+atlas = ExtResource("sheet")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="dead_5"]
+atlas = ExtResource("sheet")
+region = Rect2(320, 1280, 64, 64)
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("idle_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_1")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 4.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("run_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("run_1")
+}, {
 "duration": 1.0,
 "texture": SubResource("run_2")
 }, {
@@ -79,6 +126,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("run_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("run_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("run_7")
 }],
 "loop": true,
 "name": &"run",
@@ -86,35 +139,59 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("attack_6")
+"texture": SubResource("attack_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("attack_7")
+"texture": SubResource("attack_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("attack_8")
+"texture": SubResource("attack_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("attack_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("attack_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("attack_5")
 }],
 "loop": false,
 "name": &"attack",
-"speed": 13.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("hurt_9")
+"texture": SubResource("hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_2")
 }],
 "loop": false,
 "name": &"hurt",
-"speed": 6.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("dead_10")
+"texture": SubResource("dead_0")
 }, {
 "duration": 1.0,
-"texture": SubResource("dead_11")
+"texture": SubResource("dead_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("dead_12")
+"texture": SubResource("dead_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("dead_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("dead_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("dead_5")
 }],
 "loop": false,
 "name": &"dead",

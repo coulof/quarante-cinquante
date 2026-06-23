@@ -8,5 +8,13 @@
 export.cfg
 *.tmp
 
-# Wrangler / Cloudflare local cache & credentials
+# Packaged web build for itch.io upload
+/*-web.zip
+
+# WSL NTFS metadata + raw LPC export archives
+*:Zone.Identifier
+assets/sprites/lpc_src/*.zip
+
+# Raw LPC split-export dump (regenerate from docs/lpc-recipes.md); game uses the imported copies
+assets/sprites/lpc_src/
 .wrangler/

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_weapon"]
+[ext_resource type="PackedScene" path="res://scenes/entities/laser_bolt.tscn" id="2_bolt"]
+[ext_resource type="SpriteFrames" path="res://resources/sprite_frames/hero_glowsword_frames.tres" id="3_frames"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = "glowsword"
+display_name = "Glow Sword"
+damage_multiplier = 1.0
+hotkey = 50
+placeholder_color = Color(0.25, 0.8, 1.0, 1)
+attack_anim = "attack_glowsword"
+ranged = true
+projectile_scene = ExtResource("2_bolt")
+frames = ExtResource("3_frames")

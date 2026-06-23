@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_weapon"]
+[ext_resource type="SpriteFrames" path="res://resources/sprite_frames/hero_pickaxe_frames.tres" id="2_frames"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = "pickaxe"
+display_name = "Pickaxe"
+damage_multiplier = 1.0
+hotkey = 49
+placeholder_color = Color(0.96, 0.62, 0.2, 1)
+attack_anim = "attack_pickaxe"
+frames = ExtResource("2_frames")

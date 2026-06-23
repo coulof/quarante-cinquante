@@ -3,8 +3,8 @@ extends Node2D
 ## HUD together and shows the unlock screen on clear.
 
 ## Content unlocked by clearing this level (the level-2 weapon + a new skin).
-@export var unlock_weapon_id: String = "laser"
-@export var unlock_weapon_name: String = "Laser Gun"
+@export var unlock_weapon_id: String = "glowsword"
+@export var unlock_weapon_name: String = "Glow Sword"
 @export var unlock_skin_id: String = "hero_robotslayer"
 @export var unlock_skin_name: String = "Robot Slayer"
 @export var next_level_index: int = 2

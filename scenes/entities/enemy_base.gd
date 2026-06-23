@@ -6,7 +6,7 @@ class_name EnemyBase
 signal telegraph_started(weakness: String)
 signal telegraph_ended
 
-@export var weakness: String = "shovel"
+@export var weakness: String = "pickaxe"
 @export var attack_range: float = 52.0
 @export var detection_range: float = 800.0
 @export var telegraph_time: float = 1.5

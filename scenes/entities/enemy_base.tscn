@@ -10,7 +10,7 @@ script = ExtResource("2_enemy")
 max_health = 60.0
 move_speed = 95.0
 base_damage = 8.0
-weakness = "shovel"
+weakness = "pickaxe"
 
 [node name="TelegraphIcon" type="Label" parent="."]
 offset_left = -48.0

@@ -4,7 +4,7 @@
 [ext_resource type="SpriteFrames" path="res://resources/sprite_frames/zombie_frames.tres" id="2_frames"]
 
 [node name="Zombie" instance=ExtResource("1_enemy")]
-weakness = "shovel"
+weakness = "pickaxe"
 
 [node name="Visual" parent="." index="0"]
 sprite_frames = ExtResource("2_frames")

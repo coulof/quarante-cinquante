@@ -7,10 +7,10 @@ signal skin_unlocked(skin_id: String)
 signal skin_changed(skin_id: String)
 signal progress_loaded
 
-const SAVE_KEY := "beatemall_save_v1"
+const SAVE_KEY := "beatemall_save_v2"
 
 # --- Persisted fields ---------------------------------------------------------
-var unlocked_weapons: Array[String] = ["shovel"]
+var unlocked_weapons: Array[String] = ["pickaxe"]
 var unlocked_skins: Array[String] = ["hero_default"]
 var active_skin: String = "hero_default"
 var highest_level: int = 1
@@ -22,7 +22,7 @@ func _ready() -> void:
 
 # --- Mutators -----------------------------------------------------------------
 func unlock_weapon(weapon_id: String) -> void:
-	if weapon_id in unlocked_weapons:
+	if weapon_id.is_empty() or weapon_id in unlocked_weapons:
 		return
 	unlocked_weapons.append(weapon_id)
 	weapon_unlocked.emit(weapon_id)
@@ -30,7 +30,7 @@ func unlock_weapon(weapon_id: String) -> void:
 
 
 func unlock_skin(skin_id: String) -> void:
-	if skin_id in unlocked_skins:
+	if skin_id.is_empty() or skin_id in unlocked_skins:
 		return
 	unlocked_skins.append(skin_id)
 	skin_unlocked.emit(skin_id)
@@ -69,13 +69,13 @@ func _to_dict() -> Dictionary:
 func _from_dict(data: Dictionary) -> void:
 	# Arrays come back from JSON as untyped Array; convert explicitly.
 	var weapons: Array[String] = []
-	for w in data.get("unlocked_weapons", ["shovel"]):
+	for w in data.get("unlocked_weapons", ["pickaxe"]):
 		weapons.append(str(w))
 	var skins: Array[String] = []
 	for s in data.get("unlocked_skins", ["hero_default"]):
 		skins.append(str(s))
 
-	unlocked_weapons = weapons if not weapons.is_empty() else ["shovel"] as Array[String]
+	unlocked_weapons = weapons if not weapons.is_empty() else ["pickaxe"] as Array[String]
 	unlocked_skins = skins if not skins.is_empty() else ["hero_default"] as Array[String]
 	active_skin = str(data.get("active_skin", "hero_default"))
 	highest_level = int(data.get("highest_level", 1))
@@ -119,7 +119,7 @@ func load_progress() -> void:
 
 
 func reset() -> void:
-	unlocked_weapons = ["shovel"]
+	unlocked_weapons = ["pickaxe"]
 	unlocked_skins = ["hero_default"]
 	active_skin = "hero_default"
 	highest_level = 1

@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" path="res://scenes/entities/character_base.tscn" id="1_base"]
 [ext_resource type="Script" path="res://scenes/entities/hero.gd" id="2_hero"]
-[ext_resource type="Resource" path="res://resources/weapons/shovel.tres" id="3_shovel"]
-[ext_resource type="Resource" path="res://resources/weapons/laser.tres" id="4_laser"]
-[ext_resource type="Resource" path="res://resources/weapons/sabre.tres" id="5_sabre"]
+[ext_resource type="Resource" path="res://resources/weapons/pickaxe.tres" id="3_shovel"]
+[ext_resource type="Resource" path="res://resources/weapons/glowsword.tres" id="4_laser"]
+[ext_resource type="Resource" path="res://resources/weapons/whip.tres" id="5_sabre"]
 [ext_resource type="SpriteFrames" path="res://resources/sprite_frames/hero_frames.tres" id="6_frames"]
 
 [node name="Hero" instance=ExtResource("1_base")]

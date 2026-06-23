@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_weapon"]
+[ext_resource type="SpriteFrames" path="res://resources/sprite_frames/hero_whip_frames.tres" id="2_frames"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = "whip"
+display_name = "Whip"
+damage_multiplier = 1.0
+hotkey = 51
+placeholder_color = Color(0.92, 0.36, 0.43, 1)
+attack_anim = "attack_whip"
+melee_reach = 78.0
+frames = ExtResource("2_frames")

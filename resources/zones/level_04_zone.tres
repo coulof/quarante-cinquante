@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Zone" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/world/zone.gd" id="1_zone"]
+[ext_resource type="PackedScene" path="res://scenes/entities/robot.tscn" id="2_robot"]
+[ext_resource type="PackedScene" path="res://scenes/entities/zombie.tscn" id="3_zombie"]
+[ext_resource type="PackedScene" path="res://scenes/entities/pirate.tscn" id="4_pirate"]
+
+[resource]
+script = ExtResource("1_zone")
+enemy_scene = ExtResource("2_robot")
+enemy_scenes = Array[PackedScene]([ExtResource("2_robot"), ExtResource("3_zombie"), ExtResource("4_pirate")])
+enemy_count = 10
+spawn_interval = 1.1
+camera_target_x = 0.0

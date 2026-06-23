@@ -6,7 +6,7 @@
 [node name="Pirate" instance=ExtResource("1_enemy")]
 max_health = 70.0
 move_speed = 110.0
-weakness = "sabre"
+weakness = "whip"
 
 [node name="Visual" parent="." index="0"]
 sprite_frames = ExtResource("2_frames")

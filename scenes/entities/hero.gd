@@ -16,12 +16,15 @@ var available_weapons: Array[Weapon] = []
 var current_weapon: Weapon = null
 
 var _attack_queued := false
+## The shared bare-handed hero sheet, used when a weapon has no in-hand `frames`.
+var _default_frames: SpriteFrames = null
 
 const ENEMY_MASK := 4  # enemies live on collision layer 3 (bit value 4)
 
 
 func _setup() -> void:
 	add_to_group("hero")
+	_default_frames = visual.sprite_frames
 	_refresh_weapons()
 	GameState.weapon_unlocked.connect(func(_id: String): _refresh_weapons())
 
@@ -38,6 +41,14 @@ func _refresh_weapons() -> void:
 
 func _select(weapon: Weapon) -> void:
 	current_weapon = weapon
+	# Swap to the weapon's in-hand sheet (or the shared bare-handed one), keeping
+	# whatever animation is currently playing (idle/run) running on the new frames.
+	var wanted: SpriteFrames = weapon.frames if weapon.frames != null else _default_frames
+	if wanted != null and visual.sprite_frames != wanted:
+		var anim := visual.animation
+		visual.sprite_frames = wanted
+		if wanted.has_animation(anim):
+			visual.play(anim)
 	weapon_switched.emit(weapon)
 
 
@@ -70,14 +81,28 @@ func consume_attack() -> void:
 func perform_attack() -> float:
 	if current_weapon != null:
 		if current_weapon.ranged:
-			_fire_projectile()
+			# Fire near the end of the swing so the bolt leaves as the blade finishes.
+			_fire_projectile_delayed(attack_duration * 0.65)
 		else:
 			_swing()
 	return attack_duration
 
 
-## Hero plays a weapon-specific attack animation (overhead/laser/slash).
+## Spawn the projectile after `delay`s (coroutine — perform_attack returns immediately).
+func _fire_projectile_delayed(delay: float) -> void:
+	var weapon := current_weapon
+	await get_tree().create_timer(delay).timeout
+	# Still alive and still wielding the same ranged weapon?
+	if is_dead or current_weapon != weapon or not weapon.ranged:
+		return
+	_fire_projectile()
+
+
+## Hero plays a weapon-specific attack animation. In-hand weapon sheets use a single
+## "attack"; the shared sheet uses the per-weapon `attack_anim` (attack_pickaxe, ...).
 func get_attack_anim() -> String:
+	if current_weapon != null and current_weapon.frames != null:
+		return "attack"
 	if current_weapon != null and not current_weapon.attack_anim.is_empty():
 		return current_weapon.attack_anim
 	return "attack"
@@ -94,13 +119,17 @@ func _fire_projectile() -> void:
 
 
 func _swing() -> void:
+	# Whip and other mid-range weapons override the default reach.
+	var reach := attack_reach
+	if current_weapon != null and current_weapon.melee_reach > 0.0:
+		reach = current_weapon.melee_reach
 	var space := get_world_2d().direct_space_state
 	var query := PhysicsShapeQueryParameters2D.new()
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(attack_reach, attack_height)
+	shape.size = Vector2(reach, attack_height)
 	query.shape = shape
 	# Centre the swing box in front of the hero, on the facing side.
-	query.transform = Transform2D(0.0, global_position + Vector2(facing * attack_reach * 0.6, -attack_height * 0.5))
+	query.transform = Transform2D(0.0, global_position + Vector2(facing * reach * 0.6, -attack_height * 0.5))
 	query.collision_mask = ENEMY_MASK
 	query.collide_with_bodies = true
 

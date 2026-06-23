@@ -9,7 +9,7 @@ extends Control
 @onready var wave_label: Label = $WaveLabel
 
 const ACTIVE_MODULATE := Color(1, 1, 1, 1)
-const INACTIVE_MODULATE := Color(1, 1, 1, 0.4)
+const INACTIVE_MODULATE := Color(1, 1, 1, 0.55)
 
 var _chips: Dictionary = {}  # weapon_id -> PanelContainer
 
@@ -40,8 +40,11 @@ func set_weapon(active: Weapon) -> void:
 	if active == null:
 		return
 	for id in _chips:
-		var chip: Control = _chips[id]
-		chip.modulate = ACTIVE_MODULATE if id == active.id else INACTIVE_MODULATE
+		var chip: PanelContainer = _chips[id]
+		var is_active: bool = id == active.id
+		var accent: Color = chip.get_meta("accent")
+		chip.modulate = ACTIVE_MODULATE if is_active else INACTIVE_MODULATE
+		chip.add_theme_stylebox_override("panel", _chip_style(accent, is_active))
 
 
 func set_wave(remaining: int, total: int) -> void:
@@ -57,23 +60,45 @@ func hide_enemy_type() -> void:
 	enemy_type_label.visible = false
 
 
-func _make_chip(weapon: Weapon) -> Control:
+## A rounded card: dark background, weapon-colored border (thick + glow when active).
+func _chip_style(accent: Color, active: bool) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.11, 0.12, 0.17, 0.95 if active else 0.7)
+	sb.set_corner_radius_all(8)
+	sb.set_border_width_all(3 if active else 1)
+	sb.border_color = accent if active else Color(0.45, 0.47, 0.55, 0.8)
+	sb.content_margin_left = 8
+	sb.content_margin_right = 8
+	sb.content_margin_top = 6
+	sb.content_margin_bottom = 6
+	if active:
+		sb.shadow_color = Color(accent.r, accent.g, accent.b, 0.55)
+		sb.shadow_size = 7
+	return sb
+
+
+func _make_chip(weapon: Weapon) -> PanelContainer:
+	var accent: Color = weapon.placeholder_color
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(92, 0)
+	panel.custom_minimum_size = Vector2(96, 0)
+	panel.set_meta("accent", accent)
+	panel.add_theme_stylebox_override("panel", _chip_style(accent, false))
 
 	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 2)
+	vbox.add_theme_constant_override("separation", 3)
 	panel.add_child(vbox)
 
+	# Key badge, tinted with the weapon's accent.
 	var key := Label.new()
-	key.text = "[%s]" % char(int(weapon.hotkey))
+	key.text = char(int(weapon.hotkey))
 	key.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	key.add_theme_font_size_override("font_size", 18)
+	key.add_theme_font_size_override("font_size", 20)
+	key.add_theme_color_override("font_color", accent)
 	vbox.add_child(key)
 
 	var swatch := ColorRect.new()
-	swatch.color = weapon.placeholder_color
-	swatch.custom_minimum_size = Vector2(0, 18)
+	swatch.color = accent
+	swatch.custom_minimum_size = Vector2(0, 16)
 	swatch.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_child(swatch)
 

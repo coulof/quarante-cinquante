@@ -6,7 +6,7 @@ class_name Projectile
 @export var speed: float = 720.0
 @export var lifetime: float = 1.1
 
-var weapon_id: String = "laser"
+var weapon_id: String = "glowsword"
 var damage: float = 30.0
 var direction: Vector2 = Vector2.RIGHT
 

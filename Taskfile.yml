@@ -1,15 +1,16 @@
 version: '3'
 
-# Build & deploy the Godot HTML5 build to Cloudflare Pages.
-# Structure mirrors coulof/lafabrique.ai (cf:login / cf:create / cf:deploy* / deploy).
+# Build & deploy the Godot HTML5 build to itch.io (free) via butler.
 
 vars:
-  PROJECT_NAME: quarante-cinquante       # Cloudflare Pages project name (lowercase, hyphens)
+  PROJECT_NAME: quarante-cinquante       # used for the manual-upload zip name
   GODOT: godot                           # Godot 4 binary on PATH
   GODOT_VERSION: 4.6.2                    # must match the editor binary exactly
   EXPORT_PRESET: Web                      # name in export_presets.cfg
   BUILD_DIR: build
   TEMPLATES_DIR: '{{.HOME}}/.local/share/godot/export_templates/{{.GODOT_VERSION}}.stable'
+  ITCH_TARGET: bauagonzo/quarante-cinquante  # itch.io <user>/<game> — create the page first
+  ITCH_CHANNEL: html5
 
 tasks:
   default:
@@ -34,48 +35,51 @@ tasks:
       - '{{.GODOT}} --headless --import'
 
   build:
-    desc: Export the Web build to {{.BUILD_DIR}}/ (with Cloudflare _headers)
+    desc: Export the Web build to {{.BUILD_DIR}}/
     deps: [import, templates]
     cmds:
       - mkdir -p {{.BUILD_DIR}}
       - '{{.GODOT}} --headless --export-release "{{.EXPORT_PRESET}}" {{.BUILD_DIR}}/index.html'
-      - cp -f _headers {{.BUILD_DIR}}/_headers   # COOP/COEP for cross-origin isolation
 
   serve:
-    desc: Preview the build locally with the Cloudflare _headers applied
+    desc: Preview the build locally over HTTP
     deps: [build]
     cmds:
-      - npx wrangler pages dev {{.BUILD_DIR}}
+      - python3 -m http.server 8060 --directory {{.BUILD_DIR}}
 
   clean:
     desc: Remove the build output
     cmds:
       - rm -rf {{.BUILD_DIR}}
 
-  cf:login:
-    desc: Login to Cloudflare
+  # --- itch.io (free) ---------------------------------------------------------
+  # Primary host. The HTML5 (nothreads) build runs without COOP/COEP, so no
+  # special headers are needed — itch.io serves it as a playable web game.
+  itch:login:
+    desc: Authenticate butler with itch.io (one-time)
     cmds:
-      - npx wrangler login
+      - butler login
 
-  cf:create:
-    desc: Create the Cloudflare Pages project (run once)
-    cmds:
-      - npx wrangler pages project create {{.PROJECT_NAME}} --production-branch=main
-
-  cf:deploy:
-    desc: Deploy a preview to Cloudflare Pages
+  itch:push:
+    desc: Build and push the HTML5 build to itch.io
     deps: [build]
     cmds:
-      - npx wrangler pages deploy {{.BUILD_DIR}} --project-name={{.PROJECT_NAME}}
+      - butler push {{.BUILD_DIR}} {{.ITCH_TARGET}}:{{.ITCH_CHANNEL}}
 
-  cf:deploy:prod:
-    desc: Deploy to Cloudflare Pages (production)
+  itch:status:
+    desc: Show itch.io channel/build status
+    cmds:
+      - butler status {{.ITCH_TARGET}}
+
+  itch:zip:
+    desc: Zip the build for manual upload via the itch.io web UI
     deps: [build]
     cmds:
-      - npx wrangler pages deploy {{.BUILD_DIR}} --project-name={{.PROJECT_NAME}} --branch=main
+      - rm -f {{.PROJECT_NAME}}-web.zip
+      - cd {{.BUILD_DIR}} && zip -qr ../{{.PROJECT_NAME}}-web.zip .
+      - 'echo "Created {{.PROJECT_NAME}}-web.zip — upload it on itch.io and tick \"This file will be played in the browser\"."'
 
   deploy:
-    desc: Build and deploy to production
+    desc: Build and publish to production (itch.io)
     cmds:
-      - task: build
-      - task: cf:deploy:prod
+      - task: itch:push
