@@ -10,10 +10,15 @@ signal continued
 @onready var continue_button: Button = $Center/Panel/VBox/ContinueButton
 
 var _next_scene: String = ""
+var _done := false
 
 
 func _ready() -> void:
-	continue_button.pressed.connect(_on_continue)
+	continue_button.pressed.connect(_on_continue)          # desktop mouse + keyboard
+	# Touch: Button.pressed doesn't fire from touch with emulate_mouse_from_touch off.
+	continue_button.gui_input.connect(func(e: InputEvent):
+		if e is InputEventScreenTouch and e.pressed:
+			_on_continue())
 	continue_button.grab_focus()
 
 
@@ -30,6 +35,9 @@ func setup(weapon_name: String, skin_name: String, next_scene: String = "") -> v
 
 
 func _on_continue() -> void:
+	if _done:           # guard against mouse + touch both firing
+		return
+	_done = true
 	Audio.play("ui_confirm")
 	continued.emit()
 	if _next_scene.is_empty():
