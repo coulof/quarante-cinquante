@@ -18,3 +18,7 @@ assets/sprites/lpc_src/*.zip
 # Raw LPC split-export dump (regenerate from docs/lpc-recipes.md); game uses the imported copies
 assets/sprites/lpc_src/
 .wrangler/
+
+# Vim swap files
+*.swp
+.*.swp
