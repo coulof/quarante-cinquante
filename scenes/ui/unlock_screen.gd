@@ -30,6 +30,7 @@ func setup(weapon_name: String, skin_name: String, next_scene: String = "") -> v
 
 
 func _on_continue() -> void:
+	Audio.play("ui_confirm")
 	continued.emit()
 	if _next_scene.is_empty():
 		get_tree().reload_current_scene()

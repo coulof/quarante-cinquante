@@ -1,9 +1,17 @@
 # Audio — drop your recordings here
 
-Put **SFX** in `assets/audio/sfx/` as mono **WAV** (or OGG), and **music/loops** in
-`assets/audio/music/` as **OGG**. Name files exactly as below (lowercase). For variety,
-add numbered takes — `hero_hurt_1.wav`, `hero_hurt_2.wav`, … — and the engine picks one
-at random. Missing files are fine: the `Audio` system no-ops anything not yet recorded.
+Put **SFX** in `assets/audio/sfx/` and **music/loops** in `assets/audio/music/`, as
+**OGG**. Name files exactly as below (lowercase). For variety, add numbered takes —
+`hero_hurt_1.ogg`, `hero_hurt_2.ogg`, … — and the engine picks one at random. Missing
+files are fine: the `Audio` autoload no-ops anything not yet recorded.
+
+**Godot can't import `.m4a`/`.aac`** — convert recordings to OGG with ffmpeg:
+```bash
+ffmpeg -i clip.m4a -ac 1 -c:a libvorbis -q:a 5 clip.ogg     # SFX (mono)
+ffmpeg -i music.mp3      -c:a libvorbis -q:a 5 music.ogg     # music (keep stereo)
+```
+Then `godot --headless --import`. The system is already wired (see `scripts/audio.gd`
++ `docs/audio-plan.md`); a recorded clip plays as soon as its `<name>.ogg` is present.
 
 Full context + where each triggers: `docs/audio-plan.md`.
 

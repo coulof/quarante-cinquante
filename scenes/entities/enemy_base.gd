@@ -66,6 +66,7 @@ func _begin_telegraph() -> void:
 	_telegraph_timer = telegraph_time
 	_show_telegraph(true)
 	telegraph_started.emit(weakness)
+	Audio.play("telegraph")
 
 
 func _end_telegraph() -> void:
@@ -108,12 +109,14 @@ func perform_attack() -> float:
 		elif global_position.distance_to(target.global_position) <= attack_range * 1.2:
 			if target.has_method("take_damage"):
 				target.take_damage(base_damage, global_position)
+				Audio.play("enemy_attack")
 	return attack_duration
 
 
 ## Fire a hostile bolt at the hero (ranged enemies). The bolt's scene sets hostile +
 ## its collision mask, so it only hits the hero and deals flat `base_damage`.
 func _fire_projectile() -> void:
+	Audio.play("robot_laser")
 	var bolt: Projectile = projectile_scene.instantiate()
 	get_parent().add_child(bolt)
 	var dir := (target.global_position - global_position).normalized()

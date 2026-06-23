@@ -60,6 +60,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			# Match physical position so 1/2/3 work on any keyboard layout (AZERTY etc.).
 			if event.physical_keycode == w.hotkey:
 				_select(w)
+				Audio.play("ui_weapon_switch")
 				return
 	if event.is_action_pressed("attack"):
 		_attack_queued = true
@@ -80,6 +81,7 @@ func consume_attack() -> void:
 
 func perform_attack() -> float:
 	if current_weapon != null:
+		Audio.play("wpn_" + current_weapon.id)
 		if current_weapon.ranged:
 			# Fire near the end of the swing so the bolt leaves as the blade finishes.
 			_fire_projectile_delayed(attack_duration * 0.65)

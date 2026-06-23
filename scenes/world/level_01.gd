@@ -35,7 +35,10 @@ func _ready() -> void:
 	spawner.wave_progress.connect(hud.set_wave)
 	spawner.enemy_spawned.connect(_on_enemy_spawned)
 	spawner.all_zones_cleared.connect(_on_level_cleared)
+	spawner.zone_cleared.connect(func(_z): Audio.play("wave_clear"))
 
+	Audio.play_music("music_gameplay")
+	Audio.play("level_start")
 	spawner.start(enemies_root)
 
 
@@ -49,6 +52,7 @@ func _on_level_cleared() -> void:
 	if _cleared:
 		return
 	_cleared = true
+	Audio.play("win" if next_level_scene == "" else "unlock_fanfare")
 
 	GameState.unlock_weapon(unlock_weapon_id)
 	GameState.unlock_skin(unlock_skin_id)
@@ -60,6 +64,7 @@ func _on_level_cleared() -> void:
 
 
 func _on_hero_died() -> void:
+	Audio.play("lose")
 	# Bootstrap behaviour: brief pause, then restart the arena.
 	await get_tree().create_timer(1.5).timeout
 	get_tree().reload_current_scene()

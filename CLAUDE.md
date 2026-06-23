@@ -86,6 +86,11 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
   - **Procedural CC0 (legacy)**: `tools/generate_sprites.py` (32×48). It **overwrites**
     `assets/sprites/*.png` + `resources/sprite_frames/*.tres`, so don't rerun it for a
     character you've replaced with LPC art.
+- **Audio**: `Audio` autoload (`scripts/audio.gd`) plays SFX/music; `Audio.play("<name>")`
+  no-ops if the clip is absent. Names are the contract (`Audio.SOUNDS`); drop
+  `<name>.ogg` (+ `_1/_2…` variants → randomized) in `assets/audio/sfx/`, music in
+  `assets/audio/music/`. Per-character hurt/die via `CharacterBase.sfx_id`. Godot can't
+  import m4a/aac — convert to OGG (`ffmpeg … -c:a libvorbis`). See `assets/audio/README.md`.
 - **`.tscn`/`.tres` are hand-written** here; keep `load_steps` correct and reference
   ext resources by path. Typed arrays serialize as e.g. `Array[Weapon]([...])`.
 - **Web export needs templates** matching the editor version exactly (`task templates`).

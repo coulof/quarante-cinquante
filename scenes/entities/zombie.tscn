@@ -5,6 +5,7 @@
 
 [node name="Zombie" instance=ExtResource("1_enemy")]
 weakness = "pickaxe"
+sfx_id = "zombie"
 
 [node name="Visual" parent="." index="0"]
 sprite_frames = ExtResource("2_frames")

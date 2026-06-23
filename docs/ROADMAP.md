@@ -43,3 +43,4 @@ glow-sword bolt (delayed to the swing's end), **procedural desert backgrounds**
 - Phase-2 combat: correct weapon + perfect timing = bonus damage + special anim.
 - Gamepad / mobile touch input.
 - Procedural background generation from Godot
+- Celebration with confetti when the level ends successfully

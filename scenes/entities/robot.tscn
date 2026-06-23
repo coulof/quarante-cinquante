@@ -8,6 +8,7 @@
 max_health = 80.0
 move_speed = 80.0
 weakness = "glowsword"
+sfx_id = "robot"
 attack_range = 300.0
 attack_cooldown = 1.7
 ranged = true

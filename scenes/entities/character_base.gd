@@ -15,6 +15,9 @@ signal died
 @export var knockback_strength: float = 220.0
 ## Base damage this character deals before the combat multiplier is applied.
 @export var base_damage: float = 25.0
+## Sound prefix for this character, e.g. "hero"/"zombie" → plays `<sfx_id>_hurt` /
+## `<sfx_id>_die`. Empty = silent.
+@export var sfx_id: String = ""
 
 var health: float = 0.0
 var is_dead: bool = false
@@ -96,10 +99,14 @@ func face(dir_x: float) -> void:
 func _on_hurt() -> void:
 	if not is_dead:
 		state_machine.force_transition("Hurt")
+		if sfx_id != "":
+			Audio.play(sfx_id + "_hurt")
 
 
 func _on_died() -> void:
 	state_machine.force_transition("Dead")
+	if sfx_id != "":
+		Audio.play(sfx_id + "_die")
 
 
 ## Which attack animation to play; hero overrides this to vary it per weapon.

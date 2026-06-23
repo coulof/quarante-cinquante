@@ -14,6 +14,7 @@ script = ExtResource("2_hero")
 max_health = 40.0
 move_speed = 210.0
 base_damage = 34.0
+sfx_id = "hero"
 all_weapons = Array[Weapon]([ExtResource("3_shovel"), ExtResource("4_laser"), ExtResource("5_sabre")])
 
 [node name="Visual" parent="." index="0"]
