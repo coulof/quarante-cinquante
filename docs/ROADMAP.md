@@ -44,3 +44,7 @@ glow-sword bolt (delayed to the swing's end), **procedural desert backgrounds**
 - Gamepad / mobile touch input.
 - Procedural background generation from Godot
 - Celebration with confetti when the level ends successfully
+- **Emoji render as tofu** (□ with a code) — the default font has no emoji glyphs.
+  Affects 🎉/🏆 on the win/unlock screen and ↻ in the rotate hint. Fix by bundling an
+  emoji-capable font (or a small emoji image set), or replace those glyphs with sprites
+  / plain text.
