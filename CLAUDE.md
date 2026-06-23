@@ -87,6 +87,11 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
   ext resources by path. Typed arrays serialize as e.g. `Array[Weapon]([...])`.
 - **Web export needs templates** matching the editor version exactly (`task templates`).
 - `build/` and `.godot/` are gitignored. Commit `*.uid` and `*.import` files.
+- **Progress persists** (GameState → localStorage on web / `user://…save_v2.json` on
+  desktop). After a playthrough the save legitimately holds all unlocked weapons —
+  "all weapons unlocked on a fresh start" is the **save**, not a code bug. In debug
+  builds press **F1** to wipe progress and restart at level 1 (gated by
+  `OS.is_debug_build()`, so it's absent from the itch release).
 
 ## Git
 Commit only when asked. End commit messages with the

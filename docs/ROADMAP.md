@@ -35,6 +35,10 @@ glow-sword bolt (delayed to the swing's end), **procedural desert backgrounds**
 - Audio (SFX + music), title/main menu, win screen.
 - Hero **skins** actually change visuals (unlock is tracked; art not yet swapped).
 - More enemy types (Aliens) and weapons; per-level background tuning (`task backgrounds`).
+- **Enemy abilities:** robot ranged bolt is done; next — **pirates throw bombs** (lobbed,
+  fused, blast/AoE damage so the hero must reposition) and pirate **dodge**.
+- **Cover / rocks:** rocks become solid obstacles — block hero *and* enemy movement (no
+  walking across) *and* stop projectiles, so the player can hide behind them.
 - Camera scrolling (`zone.camera_target_x` is stubbed) for longer arenas.
 - Phase-2 combat: correct weapon + perfect timing = bonus damage + special anim.
 - Gamepad / mobile touch input.

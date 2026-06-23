@@ -63,3 +63,13 @@ func _on_hero_died() -> void:
 	# Bootstrap behaviour: brief pause, then restart the arena.
 	await get_tree().create_timer(1.5).timeout
 	get_tree().reload_current_scene()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Debug only (editor / debug builds, NOT the itch release): F1 wipes saved progress
+	# and restarts at level 1 with just the pickaxe — handy when testing the unlock flow.
+	if not OS.is_debug_build():
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
+		GameState.reset()
+		get_tree().change_scene_to_file("res://scenes/world/level_01.tscn")
