@@ -60,5 +60,17 @@ will be played in the browser"). Saves persist to `localStorage` via
 - `scenes/world/` — `level_01`–`level_04` (share `level_01.gd`), `hud`, `zone` resource
 - `scenes/ui/` — `unlock_screen`, `character_select` (stub)
 - `resources/` — weapon `.tres` (with in-hand `frames`), level zone definitions
-- `tools/` — `import_lpc_split.py` (split-export → SpriteFrames), `gen_lpc_character.py`
+- `assets/` — `bg_desert*.png` per-level backdrops, character spritesheets
+- `tools/` — `import_lpc_split.py` (split-export → SpriteFrames), `gen_lpc_character.py`,
+  `gen_desert_bg.py` (procedural Moebius/Sable desert backdrops)
 - `docs/` — `lpc-characters.md`, `lpc-recipes.md` (how to re-edit characters)
+
+### Backgrounds
+Levels use procedural pixel-art desert backdrops. Retune or add them with:
+```bash
+task bg -- --out assets/bg_desert_05.png --theme night --seed 3   # one-off
+task backgrounds                                                   # regenerate the level set
+```
+Themes: `dusk` (level 1, the byte-stable default), `dawn`, `noon`, `night`. `--seed >0`
+randomises the mesas/dunes/rocks; many other knobs (`--sun-x/-y/-r`, `--horizon`, …).
+The lower half is the flat arena (walls + enemy spawns are constrained to the sand).

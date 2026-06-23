@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/level_01.gd" id="1_level"]
 [ext_resource type="PackedScene" path="res://scenes/entities/hero.tscn" id="2_hero"]
 [ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="3_spawner"]
 [ext_resource type="Resource" path="res://resources/zones/level_02_zone.tres" id="4_zone"]
 [ext_resource type="PackedScene" path="res://scenes/world/hud.tscn" id="5_hud"]
+[ext_resource type="Texture2D" path="res://assets/bg_desert_02.png" id="6_bg"]
 
 [sub_resource type="RectangleShape2D" id="WallH"]
 size = Vector2(1280, 40)
@@ -21,17 +22,10 @@ unlock_skin_name = "Pirate Slayer"
 next_level_index = 3
 next_level_scene = "res://scenes/world/level_03.tscn"
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 offset_right = 1280.0
 offset_bottom = 720.0
-color = Color(0.1, 0.14, 0.18, 1)
-
-[node name="Floor" type="ColorRect" parent="."]
-offset_left = 40.0
-offset_top = 360.0
-offset_right = 1240.0
-offset_bottom = 700.0
-color = Color(0.18, 0.2, 0.26, 1)
+texture = ExtResource("6_bg")
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(640, 360)
@@ -41,7 +35,7 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="Top" type="CollisionShape2D" parent="Walls"]
-position = Vector2(640, 120)
+position = Vector2(640, 360)
 shape = SubResource("WallH")
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
@@ -64,7 +58,7 @@ position = Vector2(320, 540)
 [node name="EnemySpawner" type="Node" parent="."]
 script = ExtResource("3_spawner")
 first_zone = ExtResource("4_zone")
-spawn_area = Rect2(940, 220, 280, 300)
+spawn_area = Rect2(900, 440, 320, 210)
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
 

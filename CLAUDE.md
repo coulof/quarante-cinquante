@@ -52,8 +52,14 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
   back to the shared bare-handed `hero_frames.tres` + per-weapon `attack_anim`.
 - **Spawner** (`enemy_spawner.gd`): reads a `Zone` resource, spawns over time, tracks
   deaths, advances `next_zone`; `zone.enemy_scenes[]` (non-empty) = mixed waves.
-- **Levels**: `level_01.gd` is generic and shared by `level_01`/`level_02` (exported
-  unlock fields + `next_level_scene`). It wires hero ↔ HUD ↔ spawner by signals.
+- **Levels**: `level_01.gd` is generic and shared by `level_01`–`level_04` (exported
+  unlock fields + `next_level_scene`). It wires hero ↔ HUD ↔ spawner by signals. Each
+  level has a `Background` TextureRect (`assets/bg_desert*.png`); the **arena is the
+  lower-half plain** — the top wall (y=360) and enemy `spawn_area` are constrained to
+  the sand so nothing spawns in the sky.
+- **Backgrounds**: procedural pixel-art deserts from `tools/gen_desert_bg.py` (Moebius/
+  Sable; themes + `--seed`). Level 1 = `bg_desert.png` (theme `dusk`, seed 0 = byte-stable
+  default). Regenerate via `task bg -- …` / `task backgrounds`. Don't hand-edit the PNGs.
 
 ## Conventions / gotchas
 - **Signals over direct calls** — the whole entity/HUD/level wiring is signal-based.

@@ -34,6 +34,21 @@ tasks:
     cmds:
       - '{{.GODOT}} --headless --import'
 
+  bg:
+    desc: 'Generate one desert background, e.g. task bg -- --out assets/bg_desert_05.png --theme night --seed 3'
+    cmds:
+      - 'python3 tools/gen_desert_bg.py {{.CLI_ARGS}}'
+
+  backgrounds:
+    desc: Regenerate the per-level desert backgrounds (edit themes/seeds here to retune levels)
+    cmds:
+      # L1 keeps the approved look (theme=dusk, seed=0 -> byte-stable defaults)
+      - python3 tools/gen_desert_bg.py --out assets/bg_desert.png
+      - python3 tools/gen_desert_bg.py --out assets/bg_desert_02.png --theme noon  --seed 2
+      - python3 tools/gen_desert_bg.py --out assets/bg_desert_03.png --theme dawn  --seed 5
+      - python3 tools/gen_desert_bg.py --out assets/bg_desert_04.png --theme night --seed 9
+      - '{{.GODOT}} --headless --import'
+
   build:
     desc: Export the Web build to {{.BUILD_DIR}}/
     deps: [import, templates]
