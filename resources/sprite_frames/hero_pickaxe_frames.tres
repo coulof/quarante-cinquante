@@ -1,9 +1,8 @@
 [gd_resource type="SpriteFrames" load_steps=30 format=3]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/idle.png" id="t0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/run.png" id="t1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/slash_128.png" id="t2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/hurt.png" id="t3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/walk.png" id="t0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/slash_128.png" id="t1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero_pickaxe/hurt.png" id="t2"]
 
 [sub_resource type="AtlasTexture" id="idle_0"]
 atlas = ExtResource("t0")
@@ -14,95 +13,99 @@ atlas = ExtResource("t0")
 region = Rect2(64, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_0"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(0, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_1"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(64, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_2"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(128, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_3"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(192, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_4"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(256, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_5"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(320, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_6"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(384, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="run_7"]
-atlas = ExtResource("t1")
+atlas = ExtResource("t0")
 region = Rect2(448, 192, 64, 64)
 
+[sub_resource type="AtlasTexture" id="run_8"]
+atlas = ExtResource("t0")
+region = Rect2(512, 192, 64, 64)
+
 [sub_resource type="AtlasTexture" id="attack_0"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(0, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="attack_1"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(128, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="attack_2"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(256, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="attack_3"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(384, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="attack_4"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(512, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="attack_5"]
-atlas = ExtResource("t2")
+atlas = ExtResource("t1")
 region = Rect2(640, 384, 128, 128)
 
 [sub_resource type="AtlasTexture" id="hurt_0"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="hurt_1"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="hurt_2"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_0"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_1"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_2"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_3"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_4"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="dead_5"]
-atlas = ExtResource("t3")
+atlas = ExtResource("t2")
 region = Rect2(320, 0, 64, 64)
 
 [resource]
@@ -142,6 +145,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("run_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("run_8")
 }],
 "loop": true,
 "name": &"run",

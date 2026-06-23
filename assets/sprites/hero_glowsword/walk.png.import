@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dt5g77vcw3k6w"
-path="res://.godot/imported/run.png-168e4bf934b06512f59a6e12e27492ac.ctex"
+uid="uid://dfj61t3lnc45l"
+path="res://.godot/imported/walk.png-573d84741720e3f2b2ceab12febc1989.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/hero_whip/run.png"
-dest_files=["res://.godot/imported/run.png-168e4bf934b06512f59a6e12e27492ac.ctex"]
+source_file="res://assets/sprites/hero_glowsword/walk.png"
+dest_files=["res://.godot/imported/walk.png-573d84741720e3f2b2ceab12febc1989.ctex"]
 
 [params]
 

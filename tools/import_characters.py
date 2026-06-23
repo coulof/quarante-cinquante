@@ -26,9 +26,9 @@ LPC = "assets/sprites/lpc_src"
 # name -> (export subdir under lpc_src, attack PNG relative to it, from_walk)
 RECIPES = {
     "hero":           ("hero",           "standard/slash.png",        False),
-    "hero_pickaxe":   ("hero_pickaxe",   "custom/slash_128.png",      False),
-    "hero_glowsword": ("hero_glowsword", "custom/slash_oversize.png", False),
-    "hero_whip":      ("hero_whip",      "custom/tool_whip.png",      False),
+    "hero_pickaxe":   ("hero_pickaxe",   "custom/slash_128.png",      True),
+    "hero_glowsword": ("hero_glowsword", "custom/slash_oversize.png", True),
+    "hero_whip":      ("hero_whip",      "custom/tool_whip.png",      True),
     "zombie":         ("zombie",         "standard/thrust.png",       True),
     "robot":          ("robot",          "custom/slash_oversize.png", True),
     "pirate":         ("pirate",         "custom/slash_oversize.png", True),
