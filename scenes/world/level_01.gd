@@ -21,8 +21,16 @@ const UNLOCK_SCREEN := preload("res://scenes/ui/unlock_screen.tscn")
 var _cleared := false
 
 
+const BACKGROUND_FX := preload("res://scenes/world/background_fx.gd")
+
+
 func _ready() -> void:
 	GameState.reach_level(1)
+
+	# Drifting clouds + dust, just above the static Background (index 0) and behind play.
+	var fx := BACKGROUND_FX.new()
+	add_child(fx)
+	move_child(fx, 1)
 
 	# Hero -> HUD
 	hero.health_changed.connect(hud.set_health)

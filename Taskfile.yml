@@ -52,6 +52,7 @@ tasks:
       - python3 tools/gen_desert_bg.py --out assets/bg_desert_02.png --theme noon  --seed 2
       - python3 tools/gen_desert_bg.py --out assets/bg_desert_03.png --theme dawn  --seed 5
       - python3 tools/gen_desert_bg.py --out assets/bg_desert_04.png --theme night --seed 9
+      - python3 tools/gen_desert_bg.py --clouds assets/bg_desert_clouds.png   # drifting-cloud layer
       - '{{.GODOT}} --headless --import'
 
   build:

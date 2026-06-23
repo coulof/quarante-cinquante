@@ -139,6 +139,31 @@ def draw(theme, args):
     return img.resize((W * SCALE, H * SCALE), Image.NEAREST)
 
 
+def _cloud(d, cx, cy, w, base, hi):
+    """One soft, flat-bottomed pixel cloud from overlapping circles + a top highlight."""
+    r = int(w * 0.22)
+    pts = [(cx - w // 2, int(r * 0.7)), (cx - w // 4, r), (cx, int(r * 1.15)),
+           (cx + w // 4, r), (cx + w // 2, int(r * 0.7))]
+    for x, rr in pts:
+        d.ellipse([x - rr, cy - rr, x + rr, cy + rr], fill=base)
+    d.rectangle([cx - w // 2, cy, cx + w // 2, cy + int(r * 0.6)], fill=base)   # flat bottom
+    for x, rr in pts[1:4]:
+        hr = int(rr * 0.6)
+        d.ellipse([x - hr, cy - int(r * 0.8), x + hr, cy - int(r * 0.8) + 2 * hr], fill=hi)
+
+
+def make_clouds() -> Image.Image:
+    """A horizontally-tileable, transparent strip of pale clouds (edges kept clear so
+    two scrolling copies loop seamlessly). Theme-neutral — reads on every sky."""
+    img = Image.new("RGBA", (320, 60), (0, 0, 0, 0))   # small grid -> x4 = 1280x240
+    d = ImageDraw.Draw(img)
+    base = (242, 238, 228, 95)
+    hi = (255, 253, 247, 130)
+    for cx, cy, w in [(46, 18, 40), (110, 30, 52), (170, 15, 34), (232, 26, 46), (286, 20, 38)]:
+        _cloud(d, cx, cy, w, base, hi)
+    return img.resize((320 * SCALE, 60 * SCALE), Image.NEAREST)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Generate a pixel-art desert backdrop.")
     ap.add_argument("--out", default="assets/bg_desert.png")
@@ -153,7 +178,13 @@ def main():
     ap.add_argument("--mesas", type=int, default=3, help="butte count when --seed >0")
     ap.add_argument("--dunes", type=int, default=4, help="foreground dune bands")
     ap.add_argument("--rocks", type=int, default=2, help="foreground rocks when --seed >0")
+    ap.add_argument("--clouds", metavar="PATH", help="instead of a backdrop, write a "
+                    "tileable cloud strip to PATH (for the drifting-cloud layer)")
     args = ap.parse_args()
+    if args.clouds:
+        make_clouds().save(args.clouds)
+        print(f"wrote {args.clouds}  (cloud strip)")
+        return
     draw(THEMES[args.theme], args).save(args.out)
     print(f"wrote {args.out}  (1280x720, theme={args.theme}, seed={args.seed})")
 
