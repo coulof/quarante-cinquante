@@ -5,7 +5,7 @@ Put **SFX** in `assets/audio/sfx/` as mono **WAV** (or OGG), and **music/loops**
 add numbered takes — `hero_hurt_1.wav`, `hero_hurt_2.wav`, … — and the engine picks one
 at random. Missing files are fine: the `Audio` system no-ops anything not yet recorded.
 
-Full context + where each triggers: `~/.claude/plans/rippling-doodling-pearl.md`.
+Full context + where each triggers: `docs/audio-plan.md`.
 
 ## sfx/ checklist
 Hero:        hero_hurt   hero_die
