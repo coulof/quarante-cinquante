@@ -24,15 +24,24 @@ func _ready() -> void:
 
 func setup(weapon_name: String, skin_name: String, next_scene: String = "") -> void:
 	_next_scene = next_scene
-	if weapon_name.is_empty():
-		weapon_label.visible = false
+	if next_scene == "":
+		# Final level cleared → win / ending screen.
+		title_label.text = "YOU WIN! 🎉"
+		weapon_label.text = "You cleared every level!"
+		weapon_label.visible = true
+		skin_label.text = "Thanks for playing 🏆"
+		skin_label.visible = true
+		continue_button.text = "Play again"
 	else:
-		weapon_label.text = "New weapon: %s" % weapon_name
-	if skin_name.is_empty():
-		skin_label.visible = false
-	else:
-		skin_label.text = "New hero skin: %s" % skin_name
-	_spawn_confetti(_next_scene == "")   # bigger burst on the final level (win)
+		if weapon_name.is_empty():
+			weapon_label.visible = false
+		else:
+			weapon_label.text = "New weapon: %s" % weapon_name
+		if skin_name.is_empty():
+			skin_label.visible = false
+		else:
+			skin_label.text = "New hero skin: %s" % skin_name
+	_spawn_confetti(next_scene == "")   # bigger burst on the final level (win)
 
 
 ## A one-shot rain of colored confetti from the top of the screen.
@@ -76,6 +85,8 @@ func _on_continue() -> void:
 	Audio.play("ui_confirm")
 	continued.emit()
 	if _next_scene.is_empty():
-		get_tree().reload_current_scene()
+		# Win → fresh run from Level 1 (session-only progress resets to the pickaxe).
+		GameState.reset()
+		get_tree().change_scene_to_file("res://scenes/world/level_01.tscn")
 	else:
 		get_tree().change_scene_to_file(_next_scene)
