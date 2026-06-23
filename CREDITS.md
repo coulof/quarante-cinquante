@@ -5,7 +5,7 @@
 All characters are composed in the
 [Universal LPC Spritesheet Generator](https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator)
 and sliced by `tools/import_lpc_split.py`: hero + per-weapon sheets, zombie
-(skeleton + jack-o'-lantern + shovel), robot (gold knight + red glow sword), pirate
+(skeleton + jack-o'-lantern + shovel), robot (steel knight + red glow sword), pirate
 (skeleton captain + waraxe). LPC art is **CC-BY-SA 3.0 / OGA-BY 3.0 / GPL** — per
 component below.
 
@@ -26,15 +26,21 @@ arms/armour/plate/male/walk.png
 		- https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
 		- http://opengameart.org/content/lpc-clothing-updates
 
-arms/wrists/cuffs/male/walk.png
-	- Note: Original by bluecarrot16, climb/jump/sit/emote/run by JaidynReiman
+arms/hands/gloves/male/walk.png
+	- Note: metal gloves by wulax, recolors by bigbeargames, adapted to v3 bases by bluecarrot16, added to expanded animations by JaidynReiman
 	- Licenses:
 		- OGA-BY 3.0
+		- CC-BY-SA 3.0
+		- GPL 3.0
 	- Authors:
+		- Michael Whitlock (bigbeargames)
+		- Matthew Krohn (makrohn)
+		- Johannes Sjölund (wulax)
 		- bluecarrot16
 		- JaidynReiman
 	- Links:
-		- https://opengameart.org/content/lpc-pirates
+		- https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+		- http://opengameart.org/content/lpc-clothing-updates
 
 beards/beard/winter/male/walk.png
 	- Licenses:
@@ -141,7 +147,7 @@ cape/solid/fg/walk.png
 		- https://opengameart.org/content/lpc-roman-armor
 		- http://opengameart.org/content/lpc-clothing-updates
 
-feet/armour/plate/male/walk/gold.png
+feet/armour/plate/male/walk/steel.png
 	- Note: original by wulax, recolors by bigbeargames, edits for v3 base and recolors by bluecarrot16
 	- Licenses:
 		- OGA-BY 3.0
@@ -195,8 +201,8 @@ hair/spiked/adult/walk.png
 		- https://opengameart.org/content/eredah-rpg-character-base-48x64-ongoing
 		- https://opengameart.org/content/lpc-hair
 
-hat/helmet/armet/adult/walk.png
-	- Note: previously called helmet/armor, original version by Johannes Sjölund (wulax), adjustments by bluecarrot16, color reduction by JaidynReiman
+hat/helmet/armet_simple/adult/walk.png
+	- Note: original version by Johannes Sjölund (wulax), adjustments by bluecarrot16, color reduction by JaidynReiman
 	- Licenses:
 		- OGA-BY 3.0
 		- CC-BY-SA 3.0
@@ -305,6 +311,21 @@ head/heads/skeleton/adult/walk/skeleton.png
 		- https://opengameart.org/content/lpc-skeleton
 		- https://opengameart.org/content/lpc-character-bases
 
+legs/armour/plate/male/walk.png
+	- Note: reduced to 7 colors an adapted to v3 bases by bluecarrot16, climb/jump/sit/emotes by JaidynReiman
+	- Licenses:
+		- OGA-BY 3.0
+		- CC-BY-SA 3.0
+		- GPL 3.0
+	- Authors:
+		- bluecarrot16
+		- JaidynReiman
+		- Michael Whitlock (bigbeargames)
+		- Matthew Krohn (makrohn)
+		- Johannes Sjölund (wulax)
+	- Links:
+		- https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
 legs/cuffed/male/walk.png
 	- Note: Original bases by Redshrike, thrust/shoot bases by Wulax, original overalls by ElizaWy, base animations adapted from v3 overalls by bluecarrot16, pants by JaidynReiman
 	- Licenses:
@@ -382,18 +403,21 @@ tools/whip/background/walk/whip.png
 	- Links:
 		- https://opengameart.org/content/lpc-more-weapons
 
-torso/chainmail/male/walk.png
-	- Note: minor edits by bluecarrot16, reduced colors by Napsio, adjusted Male colors and Idle/Sit/Emote/Climb by JaidynReiman
+torso/armour/plate/male/walk.png
+	- Note: original by wulax, recolor by bigbeargames, color reduced to 7 colors and adapted to v3 bases by bluecarrot16, run/jump/sit/climb/revised combat by JaidynReiman, reduced colors to 6 (based on Napsio's Vitruvian)
 	- Licenses:
 		- OGA-BY 3.0
 		- CC-BY-SA 3.0
 		- GPL 3.0
 	- Authors:
-		- Johannes Sjölund (wulax)
 		- Napsio (Vitruvian Studio)
 		- JaidynReiman
+		- bluecarrot16
+		- Michael Whitlock (bigbeargames)
+		- Johannes Sjölund (wulax)
 	- Links:
 		- https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+		- https://opengameart.org/content/lpc-combat-armor-for-women
 
 torso/clothes/shortsleeve/shortsleeve/male/walk.png
 	- Note: original by ElizaWy walkcycle only; extended to all animations by adapting from longsleeve, edited to v3 bases by bluecarrot16; cleanup and climb/jump/run/sit/emote/revised combat adapted from LPC Revised by JaidynReiman
