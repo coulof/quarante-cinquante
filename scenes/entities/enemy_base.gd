@@ -11,6 +11,10 @@ signal telegraph_ended
 @export var detection_range: float = 800.0
 @export var telegraph_time: float = 1.5
 @export var attack_cooldown: float = 1.2
+## Ranged enemies (e.g. the robot) fire `projectile_scene` at the hero instead of a
+## melee hit. Give them a larger `attack_range` so they keep their distance.
+@export var ranged: bool = false
+@export var projectile_scene: PackedScene
 
 var target: Node2D = null
 
@@ -99,7 +103,19 @@ func consume_attack() -> void:
 
 func perform_attack() -> float:
 	if target != null and is_instance_valid(target) and not target.is_dead:
-		if global_position.distance_to(target.global_position) <= attack_range * 1.2:
+		if ranged and projectile_scene != null:
+			_fire_projectile()
+		elif global_position.distance_to(target.global_position) <= attack_range * 1.2:
 			if target.has_method("take_damage"):
 				target.take_damage(base_damage, global_position)
 	return attack_duration
+
+
+## Fire a hostile bolt at the hero (ranged enemies). The bolt's scene sets hostile +
+## its collision mask, so it only hits the hero and deals flat `base_damage`.
+func _fire_projectile() -> void:
+	var bolt: Projectile = projectile_scene.instantiate()
+	get_parent().add_child(bolt)
+	var dir := (target.global_position - global_position).normalized()
+	face(dir.x)
+	bolt.setup(weakness, base_damage, dir, global_position + dir * 18.0 + Vector2(0, -28))

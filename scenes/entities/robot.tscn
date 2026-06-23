@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/entities/enemy_base.tscn" id="1_enemy"]
 [ext_resource type="SpriteFrames" path="res://resources/sprite_frames/robot_frames.tres" id="2_frames"]
+[ext_resource type="PackedScene" path="res://scenes/entities/enemy_bolt.tscn" id="3_bolt"]
 
 [node name="Robot" instance=ExtResource("1_enemy")]
 max_health = 80.0
 move_speed = 80.0
 weakness = "glowsword"
+attack_range = 300.0
+attack_cooldown = 1.7
+ranged = true
+projectile_scene = ExtResource("3_bolt")
 
 [node name="Visual" parent="." index="0"]
 sprite_frames = ExtResource("2_frames")

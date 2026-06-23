@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for working in this repo. See `PROMPT_beatemall_godot4.md` for the game spec/status.
+Guidance for working in this repo. See `docs/ROADMAP.md` for the vision/roadmap.
 
 ## What this is
 Browser (HTML5) beat-em-all in **Godot 4.6 / GDScript only** (no C#), aimed at a
@@ -74,7 +74,8 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
   - **LPC split export (current, CC-BY-SA)**: the preferred path. Generator → "split by
     animation" → `assets/sprites/lpc_src/<variant>/` → `tools/import_lpc_split.py --dir …
     --name … --attack custom/<oversize>.png`. Slices the east row into a frames `.tres`.
-    See `docs/lpc-characters.md` + `docs/lpc-recipes.md`. `lpc_src/` is `.godotignore`d.
+    See `docs/lpc-characters.md` + `docs/lpc-recipes.md`. `lpc_src/` has a `.gdignore`
+    and is gitignored (regenerate from the recipe; the game uses the imported copies).
   - **Other LPC tools**: `tools/import_lpc.py` (universal-sheet slicer) and
     `tools/gen_lpc_character.py` (layer-stacking compositor, used for enemies). LPC frames
     are 64×64 (oversize attacks 128/192px); `character_base.tscn`'s `Visual` is scaled

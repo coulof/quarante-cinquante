@@ -44,7 +44,7 @@ task itch:zip        # zip build/ for manual upload via the itch.io web UI
 ```
 
 Set the itch.io target (`<user>/<game>`) via the `ITCH_TARGET` var at the top of
-`Taskfile.yml` (default `coulof/quarante-cinquante`); create the game page on
+`Taskfile.yml` (default `bauagonzo/quarante-cinquante`); create the game page on
 itch.io first. `GODOT_VERSION` must match your editor build so the right export
 templates are installed.
 
@@ -63,7 +63,7 @@ will be played in the browser"). Saves persist to `localStorage` via
 - `assets/` — `bg_desert*.png` per-level backdrops, character spritesheets
 - `tools/` — `import_lpc_split.py` (split-export → SpriteFrames), `gen_lpc_character.py`,
   `gen_desert_bg.py` (procedural Moebius/Sable desert backdrops)
-- `docs/` — `lpc-characters.md`, `lpc-recipes.md` (how to re-edit characters)
+- `docs/` — `ROADMAP.md` (vision/status), `lpc-characters.md`, `lpc-recipes.md` (re-edit characters)
 
 ### Backgrounds
 Levels use procedural pixel-art desert backdrops. Retune or add them with:
