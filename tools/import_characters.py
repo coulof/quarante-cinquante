@@ -30,7 +30,7 @@ RECIPES = {
     "hero_glowsword": ("hero_glowsword", "custom/slash_oversize.png", False),
     "hero_whip":      ("hero_whip",      "custom/tool_whip.png",      False),
     "zombie":         ("zombie",         "standard/thrust.png",       True),
-    "robot":          ("robot",          "custom/slash_oversize.png", False),
+    "robot":          ("robot",          "custom/slash_oversize.png", True),
     "pirate":         ("pirate",         "custom/slash_oversize.png", True),
 }
 

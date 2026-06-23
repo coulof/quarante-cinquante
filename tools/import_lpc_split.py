@@ -87,6 +87,10 @@ def main():
     out_dir = os.path.join(SPRITES_DIR, args.name)
     os.makedirs(out_dir, exist_ok=True)
     os.makedirs(FRAMES_DIR, exist_ok=True)
+    # Clear stale frames so changing the recipe (e.g. --from-walk) leaves no orphans.
+    for old in os.listdir(out_dir):
+        if old.endswith((".png", ".png.import", ".png.uid")):
+            os.remove(os.path.join(out_dir, old))
 
     # Copy each distinct source PNG into assets/sprites/<name>/ and record its res:// path.
     textures = {}   # src rel -> (ext_id, res_path)
