@@ -71,15 +71,18 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
   `attack` (+ `idle`/`run`/`hurt`/`dead`); the bare-handed fallback sheet uses
   `attack_pickaxe`/`attack_glowsword`/`attack_whip` (from `weapon.attack_anim`); enemies
   use a generic `attack`. Any art source must produce these names. Art sources:
-  - **LPC split export (current, CC-BY-SA)**: the preferred path. Generator → "split by
-    animation" → `assets/sprites/lpc_src/<variant>/` → `tools/import_lpc_split.py --dir …
-    --name … --attack custom/<oversize>.png`. Slices the east row into a frames `.tres`.
-    See `docs/lpc-characters.md` + `docs/lpc-recipes.md`. `lpc_src/` has a `.gdignore`
-    and is gitignored (regenerate from the recipe; the game uses the imported copies).
-  - **Other LPC tools**: `tools/import_lpc.py` (universal-sheet slicer) and
-    `tools/gen_lpc_character.py` (layer-stacking compositor, used for enemies). LPC frames
-    are 64×64 (oversize attacks 128/192px); `character_base.tscn`'s `Visual` is scaled
-    `0.75`. Credit every layer in `CREDITS.md` (share-alike).
+  - **LPC split export (current, CC-BY-SA)**: the path for **all** characters now (hero +
+    zombie/robot/pirate). Generator → "split by animation" →
+    `assets/sprites/lpc_src/<variant>/` → `tools/import_lpc_split.py --dir … --name …
+    --attack <standard/…|custom/<oversize>.png>`. Slices the east row into a frames
+    `.tres` (copies the PNGs into `assets/sprites/<name>/`). Add **`--from-walk`** for
+    bodies with no idle/run anims (Skeleton, muscular) — otherwise those frames show only
+    the head. See `docs/lpc-characters.md` + `docs/lpc-recipes.md`. `lpc_src/` has a
+    `.gdignore` and is gitignored (regenerate from the recipe; the game uses the copies).
+  - **Legacy LPC tools**: `tools/import_lpc.py` (universal-sheet slicer) and
+    `tools/gen_lpc_character.py` (layer-stacking compositor) — superseded by the split
+    importer. LPC frames are 64×64 (oversize attacks 128/192px); `character_base.tscn`'s
+    `Visual` is scaled `0.75`. Credit every layer in `CREDITS.md` (share-alike).
   - **Procedural CC0 (legacy)**: `tools/generate_sprites.py` (32×48). It **overwrites**
     `assets/sprites/*.png` + `resources/sprite_frames/*.tres`, so don't rerun it for a
     character you've replaced with LPC art.

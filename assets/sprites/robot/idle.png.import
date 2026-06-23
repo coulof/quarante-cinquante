@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jc75moykl2bh"
-path="res://.godot/imported/pirate.png-b365c33c5ac3fb2d860e8749185ef790.ctex"
+uid="uid://c0ddqmus8tjd5"
+path="res://.godot/imported/idle.png-2ce6aebc2204df68c2699b21e24f143c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/pirate.png"
-dest_files=["res://.godot/imported/pirate.png-b365c33c5ac3fb2d860e8749185ef790.ctex"]
+source_file="res://assets/sprites/robot/idle.png"
+dest_files=["res://.godot/imported/idle.png-2ce6aebc2204df68c2699b21e24f143c.ctex"]
 
 [params]
 

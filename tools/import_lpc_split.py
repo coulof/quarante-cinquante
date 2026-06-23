@@ -60,19 +60,28 @@ def main():
     ap.add_argument("--name", required=True, help="output name, e.g. hero / hero_whip / zombie")
     ap.add_argument("--attack", default="standard/slash.png",
                     help="attack PNG relative to --dir (e.g. custom/tool_whip.png)")
+    ap.add_argument("--from-walk", action="store_true",
+                    help="source idle/run from walk.png (for bodies like Skeleton that have "
+                         "no idle/run anims — otherwise those frames show only the head)")
     args = ap.parse_args()
 
     src = os.path.join(PROJECT_ROOT, args.dir) if not os.path.isabs(args.dir) else args.dir
     if not os.path.isdir(src):
         ap.error(f"not a folder: {src}")
 
+    # Some bodies (e.g. Skeleton) have no idle/run animations, so those export files
+    # contain only the head — fall back to the walk cycle for locomotion.
+    idle_src = "standard/walk.png" if args.from_walk else "standard/idle.png"
+    run_src = "standard/walk.png" if args.from_walk else "standard/run.png"
+    idle_max = 2 if args.from_walk else None
+
     # (anim, source rel path, single_dir, max_frames, speed, loop)
     plan = [
-        ("idle",   "standard/idle.png", False, None, 5.0,  True),
-        ("run",    "standard/run.png",  False, None, 12.0, True),
-        ("attack", args.attack,         False, None, 13.0, False),
-        ("hurt",   "standard/hurt.png", True,  3,    8.0,  False),
-        ("dead",   "standard/hurt.png", True,  None, 8.0,  False),
+        ("idle",   idle_src,            False, idle_max, 5.0,  True),
+        ("run",    run_src,             False, None,     12.0, True),
+        ("attack", args.attack,         False, None,     13.0, False),
+        ("hurt",   "standard/hurt.png", True,  3,        8.0,  False),
+        ("dead",   "standard/hurt.png", True,  None,     8.0,  False),
     ]
 
     out_dir = os.path.join(SPRITES_DIR, args.name)
