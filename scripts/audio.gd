@@ -8,6 +8,7 @@ extends Node
 const SFX_DIR := "res://assets/audio/sfx/"
 const MUSIC_DIR := "res://assets/audio/music/"
 const POOL := 8
+const MUSIC_DB := -14.0   # music sits under the SFX
 
 ## Sound names the game asks for (= the recording checklist). Add new names here.
 const SOUNDS := [
@@ -32,6 +33,7 @@ func _ready() -> void:
 		add_child(p)
 		_players.append(p)
 	_music = AudioStreamPlayer.new()
+	_music.volume_db = MUSIC_DB
 	add_child(_music)
 	_load_sounds()
 	# CombatSystem is an autoload too; hit feedback lives here.
