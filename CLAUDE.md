@@ -85,6 +85,10 @@ autoloads (instantiate at runtime instead). gdUnit4 is documented in
     bodies with no idle/run anims (Skeleton, muscular) — otherwise those frames show only
     the head. See `docs/lpc-characters.md` + `docs/lpc-recipes.md`. `lpc_src/` has a
     `.gdignore` and is gitignored (regenerate from the recipe; the game uses the copies).
+    **One-command reimport:** drop a fresh export in `lpc_src/<name>/` then
+    `task sprites` (all) or `task sprites -- robot` — `tools/import_characters.py` holds
+    each character's recipe (attack file, `--from-walk`), runs the slicer, refreshes
+    `CREDITS.md`, and re-imports. Edit a recipe only if a character's weapon/body changes.
   - **Legacy LPC tools**: `tools/import_lpc.py` (universal-sheet slicer) and
     `tools/gen_lpc_character.py` (layer-stacking compositor) — superseded by the split
     importer. LPC frames are 64×64 (oversize attacks 128/192px); `character_base.tscn`'s

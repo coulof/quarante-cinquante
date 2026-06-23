@@ -34,6 +34,11 @@ tasks:
     cmds:
       - '{{.GODOT}} --headless --import'
 
+  sprites:
+    desc: 'Re-import character sprites from assets/sprites/lpc_src/ (all, or e.g. task sprites -- robot)'
+    cmds:
+      - 'python3 tools/import_characters.py {{.CLI_ARGS}}'
+
   bg:
     desc: 'Generate one desert background, e.g. task bg -- --out assets/bg_desert_05.png --theme night --seed 3'
     cmds:

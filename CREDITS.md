@@ -4,10 +4,8 @@
 
 All characters are composed in the
 [Universal LPC Spritesheet Generator](https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator)
-and sliced by `tools/import_lpc_split.py`: hero + per-weapon sheets, zombie
-(skeleton + jack-o'-lantern + shovel), robot (steel knight + red glow sword), pirate
-(skeleton captain + waraxe). LPC art is **CC-BY-SA 3.0 / OGA-BY 3.0 / GPL** — per
-component below.
+and sliced by `tools/import_lpc_split.py` (via `tools/import_characters.py`).
+LPC art is **CC-BY-SA 3.0 / OGA-BY 3.0 / GPL** — per component below.
 
 ```
 arms/armour/plate/male/walk.png
@@ -502,5 +500,4 @@ weapon/sword/glowsword/walk/red.png
 
 ## Code & engine
 - Game code: © Florian Coulombel. Built with [Godot 4](https://godotengine.org) (MIT).
-- Earlier procedural placeholder sprites (`tools/generate_sprites.py`,
-  `tools/gen_lpc_character.py`): original CC0 / superseded by the LPC art above.
+- Earlier procedural sprites (`tools/generate_sprites.py`, `gen_lpc_character.py`): CC0 / superseded.
