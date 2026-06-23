@@ -28,9 +28,15 @@ func _ready() -> void:
 	var touch := force_touch_ui or DisplayServer.is_touchscreen_available()
 	joystick.visible = touch
 	attack_button.visible = touch
-	# The attack button drives the existing "attack" action (hero polls it).
-	attack_button.button_down.connect(func(): Input.action_press("attack"))
-	attack_button.button_up.connect(func(): Input.action_release("attack"))
+	# Drive the "attack" action directly from touch/mouse on the button. (Button's
+	# button_down/up signals don't fire from touch when emulate_mouse_from_touch is off,
+	# so we handle ScreenTouch ourselves — same pattern as the joystick + weapon chips.)
+	attack_button.gui_input.connect(func(e: InputEvent):
+		if e is InputEventScreenTouch or e is InputEventMouseButton:
+			if e.pressed:
+				Input.action_press("attack")
+			else:
+				Input.action_release("attack"))
 
 
 func _process(_delta: float) -> void:

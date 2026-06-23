@@ -8,6 +8,12 @@ signal skin_changed(skin_id: String)
 signal progress_loaded
 
 const SAVE_KEY := "beatemall_save_v2"
+## Progress is intentionally **session-only**: each launch starts at Level 1 with just
+## the pickaxe, and weapons unlock as you advance through that run (held in memory by
+## this autoload across level scenes). We deliberately do NOT read/write progress to
+## disk — that persistence is what kept resurrecting the "all weapons already unlocked
+## on a fresh start" bug. Flip to true to restore cross-session save/load.
+const PERSIST := false
 
 # --- Persisted fields ---------------------------------------------------------
 var unlocked_weapons: Array[String] = ["pickaxe"]
@@ -17,7 +23,11 @@ var highest_level: int = 1
 
 
 func _ready() -> void:
-	load_progress()
+	if PERSIST:
+		load_progress()
+	else:
+		# Session-only: keep the defaults (pickaxe, level 1); just signal readiness.
+		progress_loaded.emit()
 
 
 # --- Mutators -----------------------------------------------------------------
@@ -83,6 +93,8 @@ func _from_dict(data: Dictionary) -> void:
 
 # --- Persistence (localStorage on web, user:// elsewhere) ---------------------
 func save() -> void:
+	if not PERSIST:
+		return   # session-only progress — nothing is written to disk
 	var json := JSON.stringify(_to_dict())
 	if OS.has_feature("web"):
 		# Escape for safe embedding inside a JS string literal.
